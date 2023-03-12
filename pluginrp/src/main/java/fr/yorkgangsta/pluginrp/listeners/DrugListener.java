@@ -177,7 +177,7 @@ public class DrugListener implements Listener{
     int alcoolLevel = info.getAlcoolLevel();
 
     if(alcoolLevel > 20) {
-      double drunkenness = (alcoolLevel - 15) ;
+      double drunkenness = Math.min((alcoolLevel - 15) / 25, .5);
 
       double speedMultiplier = (1 - drunkenness) + (Math.random() * drunkenness * 0.5);
       double directionMultiplier = (1 - drunkenness) + (Math.random() * drunkenness);
