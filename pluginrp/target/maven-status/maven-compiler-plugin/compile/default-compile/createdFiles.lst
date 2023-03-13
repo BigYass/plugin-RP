@@ -1,7 +1,7 @@
-fr\yorkgangsta\pluginrp\listeners\DrugListener$1.class
-fr\yorkgangsta\pluginrp\Plugin.class
 fr\yorkgangsta\pluginrp\items\ItemManager.class
-fr\yorkgangsta\pluginrp\listeners\DrugListener.class
-fr\yorkgangsta\pluginrp\commands\CommandDebug.class
 fr\yorkgangsta\pluginrp\commands\DebugTabCompletor.class
 fr\yorkgangsta\pluginrp\items\ItemManager$1.class
+fr\yorkgangsta\pluginrp\listeners\DrugListener$1.class
+fr\yorkgangsta\pluginrp\Plugin.class
+fr\yorkgangsta\pluginrp\listeners\DrugListener.class
+fr\yorkgangsta\pluginrp\commands\CommandDebug.class

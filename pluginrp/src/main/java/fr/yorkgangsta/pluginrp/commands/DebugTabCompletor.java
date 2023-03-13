@@ -23,12 +23,12 @@ public class DebugTabCompletor implements TabCompleter{
       case "pluginrp_give":
         if(args.length == 1){
 
-          for (Player players : Bukkit.getOnlinePlayers())
-            s.add(players.getDisplayName());
+          for (Player p : Bukkit.getOnlinePlayers())
+            if(p.getDisplayName().toLowerCase().startsWith(args[0].toLowerCase())) s.add(p.getDisplayName());
         }
         else if(args.length == 2){
           for(ItemManager i : ItemManager.values()){
-            s.add(i.name().toLowerCase());
+            if (i.name().toLowerCase().startsWith(args[1].toLowerCase()))s.add(i.name().toLowerCase());
           }
         }
 

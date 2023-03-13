@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import fr.yorkgangsta.pluginrp.commands.CommandDebug;
 import fr.yorkgangsta.pluginrp.commands.DebugTabCompletor;
+import fr.yorkgangsta.pluginrp.data.PlayerInfo;
 import fr.yorkgangsta.pluginrp.listeners.DrugListener;
 
 /*
@@ -33,10 +34,13 @@ public class Plugin extends JavaPlugin
 
     getServer().getPluginManager().registerEvents(new DrugListener(), this);
 
+    PlayerInfo.startTask();
+
     for(Player p : Bukkit.getOnlinePlayers()){
       p.setMaxHealth(20);
-      p.setHealthScaled(true);
       p.setHealth(20);
+
+      new PlayerInfo(p);
     }
 
     LOGGER.info("PluginRP Lance! v" + getDescription().getVersion());

@@ -14,20 +14,8 @@ public class CommandDebug implements CommandExecutor{
 
   @Override
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-
-    sender.sendMessage("Commande test : " + cmd.getName());
     
-    if(cmd.getName().equalsIgnoreCase("pluginrp_ping")){
-      sender.sendMessage("Version : %s");
-      return true;
-    }
-    else if (cmd.getName().equalsIgnoreCase("pluginrp_op")){
-      if(!(sender instanceof Player)) return true;
-      Player p = (Player) sender;
-      p.sendMessage("Tu es effectivement op");
-      return true;
-    }
-    else if(cmd.getName().equalsIgnoreCase("pluginrp_give")){
+    if(cmd.getName().equalsIgnoreCase("pluginrp_give")){
       if (args.length <= 1) return false;
 
       if(!(sender instanceof Player)) return true;
@@ -43,8 +31,6 @@ public class CommandDebug implements CommandExecutor{
         return true;
       }
     }
-
-    p.sendMessage("Objet choisis : " + args[1]);
 
     ItemStack item = ItemManager.getSpecialItem(args[1], count);
 

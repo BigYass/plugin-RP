@@ -1,12 +1,14 @@
 package fr.yorkgangsta.pluginrp.items;
 
-import java.util.logging.Level;
-
-import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 
 public enum ItemManager {
   WEED, COKE, BEER;
@@ -18,6 +20,9 @@ public enum ItemManager {
     
       case COKE:
         return Material.SUGAR;
+
+      case BEER:
+        return Material.POTION;
       default:
         break;
     }
@@ -33,6 +38,9 @@ public enum ItemManager {
       
       case COKE:
         return "§fCoke";
+
+      case BEER:
+        return "§eBière";
 
       default:
       break;
@@ -56,20 +64,31 @@ public enum ItemManager {
     ItemStack item = null ;
         item = new ItemStack(type.getItemMaterial(), count);
 
-        try {
-          item.addEnchantment(Enchantment.MENDING, 0);
-        } catch (IllegalArgumentException e) {
-          Bukkit.getLogger().log(Level.FINE, "Enchantement impossible dans getSpecial Item", e);
-        }
-
         String name = type.getItemName();
+        ItemMeta meta = item.getItemMeta();
 
         if(name != ""){
-          ItemMeta meta = item.getItemMeta();
           meta.setDisplayName(name);
-          item.setItemMeta(meta);
         }
-      
+        
+        if (type == BEER){
+          PotionData potionData = new PotionData(PotionType.UNCRAFTABLE, false, false);
+
+          PotionEffect effect = new PotionEffect(PotionEffectType.ABSORPTION, 8 * 20, 0);
+
+          PotionMeta potionMeta = (PotionMeta) meta;
+
+          potionMeta.addCustomEffect(effect, false);
+          potionMeta.setBasePotionData(potionData);
+          potionMeta.setColor(Color.YELLOW);
+
+          item.setItemMeta(potionMeta);
+
+          return item;
+        }
+        
+        
+        item.setItemMeta(meta);
     return item;
   }
 
