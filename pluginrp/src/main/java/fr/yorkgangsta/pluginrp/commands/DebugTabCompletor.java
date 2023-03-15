@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import fr.yorkgangsta.pluginrp.enchants.CustomEnchant;
 import fr.yorkgangsta.pluginrp.items.ItemManager;
 
 public class DebugTabCompletor implements TabCompleter{
@@ -24,16 +25,24 @@ public class DebugTabCompletor implements TabCompleter{
         if(args.length == 1){
 
           for (Player p : Bukkit.getOnlinePlayers())
-            if(p.getDisplayName().toLowerCase().startsWith(args[0].toLowerCase())) s.add(p.getDisplayName());
+            if(p.getName().toLowerCase().startsWith(args[0].toLowerCase())) s.add(p.getName());
         }
         else if(args.length == 2){
           for(ItemManager i : ItemManager.values()){
-            if (i.name().toLowerCase().startsWith(args[1].toLowerCase()))s.add(i.name().toLowerCase());
+            if (i.name().toLowerCase().startsWith(args[1].toLowerCase()))s.add(i.name().toUpperCase().substring(0, 1) + i.name().toLowerCase().substring(1).toLowerCase());
           }
         }
 
         break;
     
+      case "pluginrp_enchant":
+        if(args.length == 1){
+          for(CustomEnchant e : CustomEnchant.getAllCustomEnchants()){
+            s.add(e.getName());
+          }
+        }
+        break;
+
       default:
         break;
     }

@@ -1,14 +1,15 @@
 package fr.yorkgangsta.pluginrp.listeners;
 
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
-import org.bukkit.WeatherType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -19,9 +20,10 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import fr.yorkgangsta.pluginrp.Plugin;
+import fr.yorkgangsta.pluginrp.PluginRP;
 import fr.yorkgangsta.pluginrp.data.Catalogue;
 import fr.yorkgangsta.pluginrp.data.PlayerInfo;
+import fr.yorkgangsta.pluginrp.enchants.CustomEnchant;
 import fr.yorkgangsta.pluginrp.items.ItemManager;
 
 public class DrugListener implements Listener{
@@ -62,11 +64,10 @@ public class DrugListener implements Listener{
         }
       };
 
-      task.runTaskTimer(Plugin.getInstance(), 20, 20);
+      task.runTaskTimer(PluginRP.getInstance(), 20, 20);
     }
-    else if(item.getItemMeta().getDisplayName().equals(ItemManager.BEER.getItemName())){
-      PlayerInfo.applyDrunk(p, 7);
-    }
+    if(item.getItemMeta().hasEnchant(CustomEnchant.ALCOHOLIC))
+      PlayerInfo.applyDrunk(p, item.getItemMeta().getEnchantLevel(CustomEnchant.ALCOHOLIC) * 3);
   }
 
   @EventHandler
@@ -80,16 +81,18 @@ public class DrugListener implements Listener{
       }
     };
 
-    task.runTaskLater(Plugin.getInstance(), 3*20);
+    task.runTaskLater(PluginRP.getInstance(), 3*20);
     
   }
 
   @EventHandler
   public void onPlayerSneak(PlayerToggleSneakEvent event){
     Player p = event.getPlayer();
-    if(p.getDisplayName().equalsIgnoreCase("YorkGangsta")){
+    if(p.getName().equalsIgnoreCase("YorkGangsta"))
       p.getWorld().playSound(p.getLocation(), Sound.ENTITY_PUFFER_FISH_FLOP, 2.0f, 1.0f);
-    }
+    if(p.getName().equalsIgnoreCase("Mikokodu94"))
+      p.getWorld().playSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 2.0f, .8f + (float)(Math.random() * .4f));
+    
   }
 
   @EventHandler
@@ -102,38 +105,9 @@ public class DrugListener implements Listener{
         if(p.getGameMode() != GameMode.CREATIVE)
           item.setAmount(item.getAmount() - 1);
 
-        final int cooldown = 10;
+        p.setCooldown(ItemManager.COKE.getItemMaterial(), 30 * 20);
 
-        p.playSound(p.getLocation(), Sound.ENTITY_WITHER_SHOOT, SoundCategory.MASTER, .5f, .6f);
-
-        p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, cooldown * 20, 0));
-        p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 0));
-        
-        p.setCooldown(ItemManager.COKE.getItemMaterial(), cooldown * 20);
-
-        p.setPlayerWeather(WeatherType.DOWNFALL);
-
-        
-        BukkitRunnable task = new BukkitRunnable() {
-          int i = cooldown;
-          
-          @Override
-          public void run() {
-            
-            p.playSound(p.getLocation(), Sound.ENTITY_WARDEN_HEARTBEAT, SoundCategory.PLAYERS, .1f + i * .1f, 0f);
-
-
-            i--;
-            if(i <= 0){
-              p.resetPlayerWeather();
-              cancel();
-            }
-          }
-          
-        };
-
-        task.runTaskTimer(Plugin.getInstance(), 20, 20);
-
+        PlayerInfo.applyCoke(p, 100);
         
       }
       else if(item.getItemMeta().getDisplayName().equalsIgnoreCase(ItemManager.WEED.getItemName())){
@@ -147,11 +121,36 @@ public class DrugListener implements Listener{
             }
           };
 
-          reset.runTaskLater(Plugin.getInstance(), 20);
+          reset.runTaskLater(PluginRP.getInstance(), 20);
         }
 
+      }
+      else if(item.getType() == Material.GLASS_BOTTLE){
+        if(p.isSneaking() && p.getTotalExperience() >= 10 && p.getCooldown(Material.GLASS_BOTTLE) == 0){
+          if(p.getGameMode() != GameMode.CREATIVE) item.setAmount(item.getAmount() - 1);
+          ItemStack bottleExp = new ItemStack(Material.EXPERIENCE_BOTTLE);
+
+          p.playSound(p.getLocation(), Sound.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1.0f, .8f + ((float)Math.random() * .4f));
+
+          if(p.getGameMode() != GameMode.CREATIVE) p.giveExp(-10);
+
+          p.setCooldown(Material.GLASS_BOTTLE, 7);
+
+          p.getInventory().addItem(bottleExp);
+          p.updateInventory();
+        }
+        
       }
     }
   }
 
+  @EventHandler
+  public void onPlayerDie(PlayerDeathEvent event){
+    if(!(event.getEntity() instanceof Player)) return;
+    Player p = (Player)event.getEntity();
+
+    PlayerInfo info = PlayerInfo.getPlayerInfo(p);
+
+    info.setAlcoolLevel(0);
+  }
 }

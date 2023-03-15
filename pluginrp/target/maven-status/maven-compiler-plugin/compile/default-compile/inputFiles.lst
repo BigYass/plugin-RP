@@ -1,8 +1,10 @@
 d:\BackupPC\Document\Dev\Plugin Minecraft\plugin RP\pluginrp\src\main\java\fr\yorkgangsta\pluginrp\data\PlayerInfo.java
+d:\BackupPC\Document\Dev\Plugin Minecraft\plugin RP\pluginrp\src\main\java\fr\yorkgangsta\pluginrp\enchants\AlcoholicEnchantment.java
 d:\BackupPC\Document\Dev\Plugin Minecraft\plugin RP\pluginrp\src\main\java\fr\yorkgangsta\pluginrp\data\Catalogue.java
 d:\BackupPC\Document\Dev\Plugin Minecraft\plugin RP\pluginrp\src\main\java\fr\yorkgangsta\pluginrp\commands\CommandDebug.java
-d:\BackupPC\Document\Dev\Plugin Minecraft\plugin RP\pluginrp\src\main\java\fr\yorkgangsta\pluginrp\Plugin.java
+d:\BackupPC\Document\Dev\Plugin Minecraft\plugin RP\pluginrp\src\main\java\fr\yorkgangsta\pluginrp\enchants\CustomEnchant.java
 d:\BackupPC\Document\Dev\Plugin Minecraft\plugin RP\pluginrp\src\main\java\fr\yorkgangsta\pluginrp\items\ItemManager.java
+d:\BackupPC\Document\Dev\Plugin Minecraft\plugin RP\pluginrp\src\main\java\fr\yorkgangsta\pluginrp\PluginRP.java
 d:\BackupPC\Document\Dev\Plugin Minecraft\plugin RP\pluginrp\src\main\java\fr\yorkgangsta\pluginrp\commands\DebugTabCompletor.java
 d:\BackupPC\Document\Dev\Plugin Minecraft\plugin RP\pluginrp\src\main\java\fr\yorkgangsta\pluginrp\events\DrunkRunnable.java
 d:\BackupPC\Document\Dev\Plugin Minecraft\plugin RP\pluginrp\src\main\java\fr\yorkgangsta\pluginrp\listeners\DrugListener.java

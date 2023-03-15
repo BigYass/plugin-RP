@@ -1,5 +1,5 @@
 name: pluginrp
-main: fr.yorkgangsta.pluginrp.Plugin
+main: fr.yorkgangsta.pluginrp.PluginRP
 
 version: 0.1.3
 api-version: 1.19
@@ -23,23 +23,15 @@ permissions:
       pluginrp.user: true
 
 commands:
-  pluginrp_ping:
-    description: Teste si le plugin fonctionne et renvoie version et autre information
-    aliases: [pluginrp, pr, pr_ping, pping]
-    permission: pluginrp.user
-    permission-message: Tu n'a pas accès à cette commandes
-    usage: Erreur de syntax! Voullez tu dire /pluginrp_ping ?
-
-  pluginrp_op:
-    description: Teste les privilège (commande admin)
-    aliases: [pr_op, pop]
-    permission: pluginrp.admin
-    permission-message: TU n'a pas accès à cette commande. Il faut être admin
-    usage: Erreur de syntax! Voullez tu dire /pluginrp_ping ?
-
   pluginrp_give:
     description: Donne des items customs du pluginRP
-    aliases: [pgive, prgive, pr_give]
+    aliases: [pgive]
     permission: pluginrp.admin
     permission-message: Tu n'a pas accès à cette commande. Il faut être admin
-    usage: "Erreur de syntax! Utilisation : /pgive <joueur> <item> [<quantite>]"
+    usage: "Erreur de syntax! Utilisation : /pgive <joueur> <item> [quantite]"
+  pluginrp_enchant:
+    description: Enchante l'item en main avec un enchantement custom
+    aliases: [penchant]
+    permission: pluginrp.admin
+    permission-message: Tu n'a pas accès à cette commande. Il faut être admin
+    usage: "Erreur de syntax! Utilisation : /penchant <enchantment> [niveau]"

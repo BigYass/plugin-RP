@@ -10,6 +10,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
+import fr.yorkgangsta.pluginrp.enchants.CustomEnchant;
+
 public enum ItemManager {
   WEED, COKE, BEER;
 
@@ -83,6 +85,8 @@ public enum ItemManager {
           potionMeta.setColor(Color.YELLOW);
 
           item.setItemMeta(potionMeta);
+
+          CustomEnchant.addCustomEnchantment(item, CustomEnchant.ALCOHOLIC, 1);
 
           return item;
         }

@@ -1,13 +1,15 @@
 package fr.yorkgangsta.pluginrp.commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import fr.yorkgangsta.pluginrp.Plugin;
+import fr.yorkgangsta.pluginrp.PluginRP;
+import fr.yorkgangsta.pluginrp.enchants.CustomEnchant;
 import fr.yorkgangsta.pluginrp.items.ItemManager;
 
 public class CommandDebug implements CommandExecutor{
@@ -27,7 +29,7 @@ public class CommandDebug implements CommandExecutor{
       try {
         count = Integer.parseInt(args[2]);
       } catch (NumberFormatException e) {
-        p.sendMessage(Plugin.PREFIX + "§cErreur: §4" + args[2] + " §cn'est pas un nombre");
+        p.sendMessage(PluginRP.PREFIX + "§cErreur: §6" + args[2] + " §cn'est pas un nombre");
         return true;
       }
     }
@@ -35,20 +37,64 @@ public class CommandDebug implements CommandExecutor{
     ItemStack item = ItemManager.getSpecialItem(args[1], count);
 
     if (item == null){
-      p.sendMessage(Plugin.PREFIX + "§cErreur: §4" + args[1] + " §cest introuvable");
+      p.sendMessage(PluginRP.PREFIX + "§cErreur: §6" + args[1] + " §cest introuvable");
       return true;
     }
 
-    p = Bukkit.getPlayer(args[0]);
+    Player target = Bukkit.getPlayer(args[0]);
 
-    p.getInventory().addItem(item);
-    p.updateInventory();
+    if (target == null){
+      p.sendMessage(PluginRP.PREFIX + "§cErreur : le joueur §6" + args[0] + " §cn'a pas été trouvé...");
+      return true;
+    }
+    target.getInventory().addItem(item);
+    target.updateInventory();
 
-    p.sendMessage(Plugin.PREFIX + "§a[" + item.getItemMeta().getDisplayName() + "§a] x" + count + " donné à " + p.getDisplayName());
+    p.sendMessage(PluginRP.PREFIX + "§a[" + item.getItemMeta().getDisplayName() + "§a] x" + count + " donné à " + target.getDisplayName());
 
     return true;
     }
+    else if(cmd.getName().equalsIgnoreCase("pluginrp_enchant")){
+      if (args.length < 1) return false;
 
+      if(!(sender instanceof Player)) return true;
+      Player p = (Player) sender;
+
+      
+      CustomEnchant ench = CustomEnchant.getCustomEnchantByName(args[0]);
+      
+      if (ench == null){
+        p.sendMessage(PluginRP.PREFIX + "§cL'enchantement §6" + args[0] + " §cn'a pas été trouvé...");
+        return true;
+      }
+      
+      int level = ench.getStartLevel();
+      if(args.length > 1){
+        try {
+          level = Integer.parseInt(args[1]);
+        } catch (NumberFormatException e) {
+          p.sendMessage(PluginRP.PREFIX + "§cErreur: §6" + args[2] + " §cn'est pas un nombre entier");
+          return true;
+        }
+      }
+    
+      ItemStack item = p.getInventory().getItemInMainHand();
+
+      if(item.getType() == Material.AIR){
+        p.sendMessage(PluginRP.PREFIX + "§cErreur : Il faut un objet dans ta main sale hmar...");
+        return true;
+      } 
+
+      if(!CustomEnchant.addCustomEnchantment(item, ench, level)){
+        p.sendMessage(PluginRP.PREFIX + "§cErreur lors de l'ajout de l'enchantement §6" + ench.getName() + "§c...");
+      }
+
+      p.getInventory().setItemInMainHand(item);
+      p.updateInventory();
+
+      return true;
+
+    }
 
     return false;
   }
