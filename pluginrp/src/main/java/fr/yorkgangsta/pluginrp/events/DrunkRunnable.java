@@ -11,7 +11,7 @@ public class DrunkRunnable extends BukkitRunnable{
   private final Player p;
   private final int max;
 
-  private final static double boostRate = .1;
+  private final static double boostRate = .5;
 
   private int i = 0;
 
@@ -24,16 +24,13 @@ public class DrunkRunnable extends BukkitRunnable{
   public void run() {
     Location eyeLocation = p.getEyeLocation();
     Vector direction = eyeLocation.getDirection().normalize();
-    p.spawnParticle(Particle.BUBBLE_POP, eyeLocation.add(direction.multiply(.2)), 4, .1, .2, .1, 0.01);
-    p.setWalkSpeed(.2f);
+    p.getWorld().spawnParticle(Particle.BUBBLE_POP, eyeLocation.add(direction.multiply(.2)), 4, .1, .1, .1, 0.01);
+
     if(!p.isFlying() && Math.random() < boostRate)
-      if(p.getGameMode() != GameMode.CREATIVE && p.getGameMode() != GameMode.SPECTATOR)
-        p.setSneaking(true);
-    if(!p.isFlying() && Math.random() < boostRate)
-      if(p.getGameMode() != GameMode.CREATIVE && p.getGameMode() != GameMode.SPECTATOR)
-        p.setWalkSpeed(0);
+      if(!p.isFlying() && p.isOnGround() && (!(p.getGameMode() == GameMode.CREATIVE) || !(p.getGameMode() == GameMode.SPECTATOR)))
+        p.setVelocity(new Vector(0, 0, 0));
 
     if(i++ >= max) cancel();
   }
-  
+
 }

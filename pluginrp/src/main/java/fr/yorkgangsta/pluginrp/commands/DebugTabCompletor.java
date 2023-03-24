@@ -10,7 +10,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import fr.yorkgangsta.pluginrp.enchants.CustomEnchant;
-import fr.yorkgangsta.pluginrp.items.ItemManager;
+import fr.yorkgangsta.pluginrp.items.SpecialItemStack;
 
 public class DebugTabCompletor implements TabCompleter{
 
@@ -19,7 +19,7 @@ public class DebugTabCompletor implements TabCompleter{
     if(!(sender instanceof Player)) return null;
 
     List<String> s = new ArrayList<String>();
-    
+
     switch (cmd.getName()) {
       case "pluginrp_give":
         if(args.length == 1){
@@ -28,17 +28,17 @@ public class DebugTabCompletor implements TabCompleter{
             if(p.getName().toLowerCase().startsWith(args[0].toLowerCase())) s.add(p.getName());
         }
         else if(args.length == 2){
-          for(ItemManager i : ItemManager.values()){
-            if (i.name().toLowerCase().startsWith(args[1].toLowerCase()))s.add(i.name().toUpperCase().substring(0, 1) + i.name().toLowerCase().substring(1).toLowerCase());
+          for(String name : SpecialItemStack.getSpecialItemNames()){
+            if (name.toLowerCase().startsWith(args[1].toLowerCase()))s.add(name.toUpperCase().substring(0, 1) + name.toLowerCase().substring(1).toLowerCase());
           }
         }
 
         break;
-    
+
       case "pluginrp_enchant":
         if(args.length == 1){
           for(CustomEnchant e : CustomEnchant.getAllCustomEnchants()){
-            s.add(e.getName());
+            if(e.getName().toLowerCase().startsWith(args[0].toLowerCase())) s.add(e.getRealName());
           }
         }
         break;
@@ -49,5 +49,5 @@ public class DebugTabCompletor implements TabCompleter{
 
     return s;
   }
-  
+
 }

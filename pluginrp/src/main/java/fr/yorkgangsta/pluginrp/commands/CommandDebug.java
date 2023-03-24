@@ -10,13 +10,13 @@ import org.bukkit.inventory.ItemStack;
 
 import fr.yorkgangsta.pluginrp.PluginRP;
 import fr.yorkgangsta.pluginrp.enchants.CustomEnchant;
-import fr.yorkgangsta.pluginrp.items.ItemManager;
+import fr.yorkgangsta.pluginrp.items.SpecialItemStack;
 
 public class CommandDebug implements CommandExecutor{
 
   @Override
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-    
+
     if(cmd.getName().equalsIgnoreCase("pluginrp_give")){
       if (args.length <= 1) return false;
 
@@ -34,7 +34,7 @@ public class CommandDebug implements CommandExecutor{
       }
     }
 
-    ItemStack item = ItemManager.getSpecialItem(args[1], count);
+    ItemStack item = SpecialItemStack.getSpecialItemByName(args[1], count);
 
     if (item == null){
       p.sendMessage(PluginRP.PREFIX + "§cErreur: §6" + args[1] + " §cest introuvable");
@@ -60,14 +60,14 @@ public class CommandDebug implements CommandExecutor{
       if(!(sender instanceof Player)) return true;
       Player p = (Player) sender;
 
-      
+
       CustomEnchant ench = CustomEnchant.getCustomEnchantByName(args[0]);
-      
+
       if (ench == null){
         p.sendMessage(PluginRP.PREFIX + "§cL'enchantement §6" + args[0] + " §cn'a pas été trouvé...");
         return true;
       }
-      
+
       int level = ench.getStartLevel();
       if(args.length > 1){
         try {
@@ -77,13 +77,22 @@ public class CommandDebug implements CommandExecutor{
           return true;
         }
       }
-    
+
       ItemStack item = p.getInventory().getItemInMainHand();
 
       if(item.getType() == Material.AIR){
         p.sendMessage(PluginRP.PREFIX + "§cErreur : Il faut un objet dans ta main sale hmar...");
         return true;
-      } 
+      }
+
+      if(!ench.canEnchantItem(item)){
+        p.sendMessage(PluginRP.PREFIX + "§cErreur §7: §c" + item.getType().getTranslationKey() + " ne pas être enchanté avec l'enchantement §6" + ench.getName());
+        return true;
+      }
+
+      if(ench.getMaxLevel() < level) p.sendMessage(PluginRP.PREFIX + "§cAttention §7: §rLe niveau maximum est §6" + ench.getMaxLevel());
+      if(ench.getStartLevel() > level) p.sendMessage(PluginRP.PREFIX + "§cAttention §7: §rLe niveau minimum est §6" + ench.getStartLevel());
+
 
       if(!CustomEnchant.addCustomEnchantment(item, ench, level)){
         p.sendMessage(PluginRP.PREFIX + "§cErreur lors de l'ajout de l'enchantement §6" + ench.getName() + "§c...");
@@ -98,5 +107,5 @@ public class CommandDebug implements CommandExecutor{
 
     return false;
   }
-  
+
 }

@@ -1,0 +1,27 @@
+name: metiers
+main: fr.yorkgangsta.metiers.PluginMetier
+version: 0.0.1
+api-version: 1.19
+
+permissions:
+  metiers.admin:
+    description: Les commandes administrateurs du plugin
+    default: op
+  metiers.user:
+    description: Les commandes utilisateurs du plugin
+    default: true
+  metiers.*:
+    description: Donne les permissions pour toute les commandes Metiers
+    default: op
+    children:
+      metiers.admin: true
+      metiers.user: true
+
+commands:
+  commands:
+  role:
+    description: Permets de faire les fonctions des metiers
+    aliases: []
+    permission: pluginrp.admin
+    permission-message: Tu n'a pas accès à cette commande. Il faut être admin espece de hmar
+    usage: "Erreur de syntax!"

@@ -10,6 +10,7 @@ import fr.yorkgangsta.pluginrp.commands.CommandDebug;
 import fr.yorkgangsta.pluginrp.commands.DebugTabCompletor;
 import fr.yorkgangsta.pluginrp.data.PlayerInfo;
 import fr.yorkgangsta.pluginrp.enchants.CustomEnchant;
+import fr.yorkgangsta.pluginrp.items.RecipeManager;
 import fr.yorkgangsta.pluginrp.listeners.DrugListener;
 
 /*
@@ -35,11 +36,11 @@ public class PluginRP extends JavaPlugin
 
     getServer().getPluginManager().registerEvents(new DrugListener(), this);
 
-    
-
     CustomEnchant.register();
 
     PlayerInfo.startTask();
+
+    RecipeManager.register();
 
     LOGGER.info("PluginRP Lance! v" + getDescription().getVersion());
   }
@@ -48,8 +49,8 @@ public class PluginRP extends JavaPlugin
   {
     for(Player p : Bukkit.getOnlinePlayers()){
       PlayerInfo.resetHealth(p);
-    } 
-    LOGGER.info("PluginRP éteint!");
+    }
+    LOGGER.info("PluginRP eteint!");
   }
 
   public String getVersion(){
@@ -59,5 +60,5 @@ public class PluginRP extends JavaPlugin
   public static PluginRP getInstance(){
     return INSTANCE;
   }
- 
+
 }
