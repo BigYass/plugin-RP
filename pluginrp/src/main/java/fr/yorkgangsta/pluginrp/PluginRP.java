@@ -35,6 +35,8 @@ public class PluginRP extends JavaPlugin
 
     getServer().getPluginManager().registerEvents(new DrugListener(), this);
 
+    
+
     CustomEnchant.register();
 
     PlayerInfo.startTask();

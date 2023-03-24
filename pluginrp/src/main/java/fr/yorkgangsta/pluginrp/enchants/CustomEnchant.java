@@ -19,7 +19,7 @@ public abstract class CustomEnchant extends Enchantment{
 
   private String name;
 
-  private static final List<CustomEnchant> allCustomEnchatments = new ArrayList<>();
+  private static List<CustomEnchant> allCustomEnchatments = new ArrayList<>();
   
   public static final CustomEnchant ALCOHOLIC = new AlcoholicEnchantment(PluginRP.getInstance(), "Ivresse");
 
@@ -51,9 +51,7 @@ public abstract class CustomEnchant extends Enchantment{
     List<String> lore = meta.getLore();
     if (lore == null) lore = new ArrayList<>();
 
-
-    Bukkit.broadcastMessage("Niveau = " + item.getEnchantmentLevel(enchant));
-    String enchantLore = "§7" + enchant.getName() + " " + intToRoman(item.getEnchantmentLevel(enchant) + 1);
+    String enchantLore = "§7" + enchant.getName() + " " + intToRoman(safeLevel);
     if (!lore.contains(enchantLore)) {
       lore.add(enchantLore);
       meta.setLore(lore);

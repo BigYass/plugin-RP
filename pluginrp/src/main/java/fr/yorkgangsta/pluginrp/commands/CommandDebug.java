@@ -73,7 +73,7 @@ public class CommandDebug implements CommandExecutor{
         try {
           level = Integer.parseInt(args[1]);
         } catch (NumberFormatException e) {
-          p.sendMessage(PluginRP.PREFIX + "§cErreur: §6" + args[2] + " §cn'est pas un nombre entier");
+          p.sendMessage(PluginRP.PREFIX + "§cErreur: §6" + args[1] + " §cn'est pas un nombre entier");
           return true;
         }
       }

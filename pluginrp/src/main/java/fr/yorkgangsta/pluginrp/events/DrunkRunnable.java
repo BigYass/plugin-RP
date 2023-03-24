@@ -25,14 +25,14 @@ public class DrunkRunnable extends BukkitRunnable{
     Location eyeLocation = p.getEyeLocation();
     Vector direction = eyeLocation.getDirection().normalize();
     p.spawnParticle(Particle.BUBBLE_POP, eyeLocation.add(direction.multiply(.2)), 4, .1, .2, .1, 0.01);
+    p.setWalkSpeed(.2f);
     if(!p.isFlying() && Math.random() < boostRate)
       if(p.getGameMode() != GameMode.CREATIVE && p.getGameMode() != GameMode.SPECTATOR)
         p.setSneaking(true);
     if(!p.isFlying() && Math.random() < boostRate)
       if(p.getGameMode() != GameMode.CREATIVE && p.getGameMode() != GameMode.SPECTATOR)
         p.setWalkSpeed(0);
-    else
-      p.setWalkSpeed(.2f);
+
     if(i++ >= max) cancel();
   }
   
