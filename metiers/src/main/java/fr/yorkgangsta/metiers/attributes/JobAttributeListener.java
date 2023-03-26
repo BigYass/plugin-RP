@@ -2,6 +2,7 @@ package fr.yorkgangsta.metiers.attributes;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -12,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityBreedEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
@@ -23,9 +25,14 @@ import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import fr.yorkgangsta.metiers.PluginMetier;
 import fr.yorkgangsta.metiers.jobs.Job;
 import fr.yorkgangsta.metiers.jobs.PlayerInfo;
+import fr.yorkgangsta.pluginrp.enchants.CustomEnchant;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 
@@ -99,6 +106,20 @@ public class JobAttributeListener implements Listener{
   }
 
   @EventHandler
+  public void onPlayerBreedEntity(EntityBreedEvent event){
+    if(event.getBreeder() instanceof Player){
+      Player p = (Player)event.getBreeder();
+
+      Job job = PlayerInfo.getJob(p);
+
+      if(p.getGameMode() != GameMode.CREATIVE && EntityBreedAttribute.isForbidden(event.getEntityType()) && !job.canBreedEntity(event.getEntityType())){
+        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "Je ne sais pas comment nourir ces animaux proprement..."));
+        event.setCancelled(true);
+      }
+    }
+  }
+
+  @EventHandler
   public void onPlayerUseItemOnBlock(PlayerInteractEvent event){
     Player p = event.getPlayer();
 
@@ -144,10 +165,57 @@ public class JobAttributeListener implements Listener{
   }
 
   @EventHandler
-  public void onPlayerUsePortal(PlayerPortalEvent event){
-    Player p = event.getPlayer();
+  public void onPlayerUsePortal(final PlayerPortalEvent event){
+    final Player p = event.getPlayer();
     Job job = PlayerInfo.getJob(p);
     if ((p.getGameMode() != GameMode.CREATIVE && p.getGameMode() != GameMode.SPECTATOR) && event.getTo().getWorld().getName().endsWith("nether") && !job.canAcessNether()){
+        for(ItemStack paper : p.getInventory().getStorageContents()){
+          if(paper != null && paper.hasItemMeta() && paper.getItemMeta().hasEnchant(CustomEnchant.NETHER_PASS)){
+            paper.setAmount(paper.getAmount() - 1);
+            BukkitRunnable netherCost = new BukkitRunnable() {
+              boolean teleport = false;
+              @Override
+              public void run() {
+                final Location loc = event.getFrom();
+
+                if(!p.getWorld().getName().endsWith("nether")) {cancel();return;}
+
+                for(ItemStack paper : p.getInventory().getStorageContents())
+                  if(paper != null && paper.hasItemMeta() && paper.getItemMeta().hasEnchant(CustomEnchant.NETHER_PASS)){
+                    paper.setAmount(paper.getAmount() - 1);
+                    return;
+                  }
+
+                  if(teleport){
+                    p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "Je suis explusé du nether"));
+                    BukkitRunnable tpBack = new BukkitRunnable() {
+                      public void run(){
+                        p.teleport(loc);
+                        cancel();
+                      }
+                    };
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 80, 2));
+                    p.playSound(p, Sound.BLOCK_PORTAL_TRIGGER, SoundCategory.AMBIENT, 2.0f, .8f + (float)(Math.random() * .4));
+                    tpBack.runTaskLater(PluginMetier.getInstance(), 80);
+                    cancel();
+                    return;
+                  }
+                  teleport = true;
+
+                  p.playSound(p, Sound.ENTITY_SKELETON_AMBIENT, SoundCategory.AMBIENT, 2.0f, .5f);
+                  p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "Je n'ai plus de ticket" + ChatColor.GRAY + " (téléportation dans 1 minute)"));
+
+                }
+            };
+
+            final int duration = 60;
+
+            netherCost.runTaskTimer(PluginMetier.getInstance(), 60, duration * 20);
+
+            return;
+
+          }
+      }
       p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "Je n'ai pas d'autorisation pour accéder à cette dimension..."));
       event.setCancelled(true);
     }

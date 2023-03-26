@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -20,7 +21,7 @@ public class SpecialItemStack extends ItemStack{
 
   public static SpecialItemStack WEED = new SpecialItemStack(Material.DRIED_KELP, "§2Canabis", null, CustomEnchant.WEED, 1);
 
-  public static SpecialItemStack COKE = new SpecialItemStack(Material.SUGAR, "§fCoke", null, CustomEnchant.COKE, 1);
+  public static SpecialItemStack COKE = new SpecialItemStack(Material.SUGAR, "§fCokaine", null, CustomEnchant.COKE, 1);
 
   public static SpecialItemStack BEER = new SpecialItemStack(Arrays.asList(new PotionEffect[]{
     new PotionEffect(PotionEffectType.ABSORPTION, 8 * 20, 0)
@@ -28,13 +29,41 @@ public class SpecialItemStack extends ItemStack{
 
   public static SpecialItemStack THC = new SpecialItemStack(Arrays.asList(new PotionEffect[]{
     new PotionEffect(PotionEffectType.POISON, 60 * 20, 0)
-  }), Color.GREEN, "§2THC Concentré", null, CustomEnchant.WEED, 3);
+  }), Color.GREEN, "§2THC Concentré", Arrays.asList("§7Ingrédient Spécial"), CustomEnchant.WEED, 3);
+
+  public static SpecialItemStack MALT_POTION = new SpecialItemStack(Arrays.asList(new PotionEffect[]{
+
+  }), Color.BLUE, "§fSolution de Malt", Arrays.asList("§7Ingrédient Spécial"), null, 0);
+
+  public static SpecialItemStack ETHANOL_POTION = new SpecialItemStack(Arrays.asList(new PotionEffect[]{
+    new PotionEffect(PotionEffectType.POISON, 2 * 20, 4)
+  }), Color.BLUE, "§fEthanol", Arrays.asList("§7Ingrédient Spécial"), CustomEnchant.ALCOHOLIC, 2);
+
+
+  public static SpecialItemStack SPECIAL_POWDER = new SpecialItemStack(Material.GUNPOWDER, "§fPoudre Special", Arrays.asList("§7Ingrédient Spécial"), Enchantment.VANISHING_CURSE, 1);
+
+  public static SpecialItemStack SUGAR_POTION = new SpecialItemStack(Arrays.asList(new PotionEffect[]{
+    new PotionEffect(PotionEffectType.SPEED, 5 * 20, 4),
+    new PotionEffect(PotionEffectType.SLOW, 30 * 20, 1),
+    new PotionEffect(PotionEffectType.HUNGER, 30 * 20, 4)
+  }), Color.WHITE, "§fEau Saturé en Sucre", Arrays.asList("§7Ingrédient Spécial"), null, 0);
+
+  public static SpecialItemStack COKE_ESSENCE = new SpecialItemStack(Arrays.asList(new PotionEffect[]{
+    new PotionEffect(PotionEffectType.HARM, 20, 2)
+  }), Color.WHITE, "§fEssence de Cokaine", Arrays.asList("§7Ingrédient Spécial"), null, 0);
+
+  public static SpecialItemStack EHTANOL_POWDER = new SpecialItemStack(Material.GUNPOWDER, "§fPoudre Imbibé", Arrays.asList("§7Ingrédient Spécial"), CustomEnchant.VANISHING_CURSE, 1);
+
+  public static SpecialItemStack NETHER_PASS = new SpecialItemStack(Material.PAPER, "§cTicket §4Nether",null , CustomEnchant.NETHER_PASS, 1);
+
+  public static SpecialItemStack DICIPLINE_STICK = new SpecialItemStack(Material.STICK, "§r§cLe baton de la discipline <3",null , CustomEnchant.DISCIPLINE, 1);
+
 
 
 
   private final String nameID;
 
-  public SpecialItemStack(Material type, String customName, List<String> lore, CustomEnchant ench, int level){
+  public SpecialItemStack(Material type, String customName, List<String> lore, Enchantment ench, int level){
     super(type);
     this.nameID = convertNameToID(customName);
 
@@ -45,9 +74,10 @@ public class SpecialItemStack extends ItemStack{
     meta.setLore(lore);
 
     setItemMeta(meta);
+    if(ench != null)
+      CustomEnchant.addCustomEnchantment(this, ench, level);
 
-    CustomEnchant.addCustomEnchantment(this, ench, level);
-    allSpecialItemStack.put(convertNameToID(customName), this);
+    allSpecialItemStack.put(this.nameID, this);
   }
 
   private SpecialItemStack(List<PotionEffect> effects, Color color, String customName, List<String> lore, CustomEnchant ench, int level){
@@ -73,7 +103,9 @@ public class SpecialItemStack extends ItemStack{
 
   public String getNameID() { return nameID; }
 
-  public static ItemStack getSpecialItemByName(String name, int amount){ return getSpecialItem(allSpecialItemStack.get(name), amount); }
+  public static ItemStack getSpecialItemByName(String name, int amount){
+    return getSpecialItem(allSpecialItemStack.get(name), amount);
+  }
 
   public static ItemStack getSpecialItem(SpecialItemStack type, int amount){
     ItemStack result = new ItemStack(type);

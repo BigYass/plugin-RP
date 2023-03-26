@@ -30,9 +30,13 @@ public class PluginRP extends JavaPlugin
 
     getCommand("pluginrp_give").setExecutor(new CommandDebug());
     getCommand("pluginrp_enchant").setExecutor(new CommandDebug());
+    getCommand("pluginrp_teleport").setExecutor(new CommandDebug());
+
 
     getCommand("pluginrp_give").setTabCompleter(new DebugTabCompletor());
     getCommand("pluginrp_enchant").setTabCompleter(new DebugTabCompletor());
+    getCommand("pluginrp_teleport").setTabCompleter(new DebugTabCompletor());
+
 
     getServer().getPluginManager().registerEvents(new DrugListener(), this);
 
@@ -50,6 +54,7 @@ public class PluginRP extends JavaPlugin
     for(Player p : Bukkit.getOnlinePlayers()){
       PlayerInfo.resetHealth(p);
     }
+
     LOGGER.info("PluginRP eteint!");
   }
 

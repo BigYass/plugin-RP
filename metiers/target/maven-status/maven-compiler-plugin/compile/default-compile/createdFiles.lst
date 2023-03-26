@@ -1,5 +1,7 @@
 fr/yorkgangsta/metiers/PluginMetier.class
 fr/yorkgangsta/metiers/ability/AbilityLaunchType.class
+fr/yorkgangsta/metiers/data/Catalogue.class
+fr/yorkgangsta/metiers/jobs/PlayerSave.class
 fr/yorkgangsta/metiers/jobs/Job.class
 fr/yorkgangsta/metiers/ability/PlayerRunnable.class
 fr/yorkgangsta/metiers/attributes/ItemUseAttribute.class
@@ -12,10 +14,16 @@ fr/yorkgangsta/metiers/attributes/JobAttributeListener.class
 fr/yorkgangsta/metiers/ability/Ability$AbilityType.class
 fr/yorkgangsta/metiers/attributes/ShearEntityAttribute.class
 fr/yorkgangsta/metiers/ability/Ability$1.class
+fr/yorkgangsta/metiers/attributes/JobAttributeListener$1$1.class
+fr/yorkgangsta/metiers/attributes/JobAttributeListener$1.class
 fr/yorkgangsta/metiers/attributes/AbillityOnSneakAttribute.class
 fr/yorkgangsta/metiers/attributes/BlockUseAttribute.class
 fr/yorkgangsta/metiers/ability/PlayerRunnable$1.class
 fr/yorkgangsta/metiers/jobs/RoleExecutor.class
+fr/yorkgangsta/metiers/attributes/ToolUseAttribute.class
+fr/yorkgangsta/metiers/attributes/ItemUseOnBlockAttribute.class
+fr/yorkgangsta/metiers/attributes/EntityBreedAttribute.class
 fr/yorkgangsta/metiers/attributes/PotionEffectRunnable.class
 fr/yorkgangsta/metiers/ability/Ability.class
+fr/yorkgangsta/metiers/attributes/EntityInteractAttribute.class
 fr/yorkgangsta/metiers/attributes/ItemUseOnEntityAttribute.class

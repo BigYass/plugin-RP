@@ -34,9 +34,17 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.19.3-R0.1-SNAPSHOT</version>
+			<version>1.19.4-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>fr.yorkgangsta.pluginrp</groupId>
+			<artifactId>pluginrp</artifactId>
+			<version>0.0.1</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/../pluginrp/target/pluginrp-0.0.1.jar</systemPath>
+	 </dependency>
 	</dependencies>
 
 	<build>

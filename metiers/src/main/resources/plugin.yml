@@ -25,3 +25,5 @@ commands:
     permission: pluginrp.admin
     permission-message: Tu n'a pas accès à cette commande. Il faut être admin espece de hmar
     usage: "Erreur de syntax!"
+
+depend: [pluginrp]

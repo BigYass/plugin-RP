@@ -138,12 +138,15 @@ public class PlayerInfo {
       if(info.getAlcoolLevel() == 20) p.setGliding(false);;
 
       final int cokeLevel = 600, frequence = 60, maxTime = 6;
-      if(info.getCokeLevel() <= cokeLevel && info.getCokeLevel() > cokeLevel - (frequence * maxTime)){
-        if(info.getCokeLevel() % frequence == 0){
-          AttributeModifier nerf = new AttributeModifier(nerfHealthName, -2.0, Operation.ADD_NUMBER);
-          p.getAttribute(Attribute.GENERIC_MAX_HEALTH).addModifier(nerf);
+      if(info.getCokeLevel() <= cokeLevel){
+        if(info.getCokeLevel() % frequence == 0 && info.getCokeLevel() >= 5){
+          if(info.getCokeLevel() > cokeLevel - (frequence * maxTime)){
+            AttributeModifier nerf = new AttributeModifier(nerfHealthName, -2.0, Operation.ADD_NUMBER);
+            p.getAttribute(Attribute.GENERIC_MAX_HEALTH).addModifier(nerf);
+          }
 
           p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 30, 0));
+
           p.playSound(p.getLocation(), Sound.ENTITY_WARDEN_HEARTBEAT, SoundCategory.PLAYERS, 2f, 0f);
 
           p.sendMessage("§7Besoin de §fCoke§7...§r");
@@ -152,8 +155,8 @@ public class PlayerInfo {
 
         }
 
-        p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, updateRate, 0));
-        p.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, updateRate, 0));
+        p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, updateRate + 20, 0));
+        p.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, updateRate + 20, 0));
 
       }
 

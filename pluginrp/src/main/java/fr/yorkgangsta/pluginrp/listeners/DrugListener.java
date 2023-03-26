@@ -1,17 +1,16 @@
 package fr.yorkgangsta.pluginrp.listeners;
 
-import java.util.List;
-
-import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
-import org.bukkit.entity.AbstractVillager;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
@@ -24,19 +23,16 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.VillagerAcquireTradeEvent;
-import org.bukkit.event.entity.VillagerCareerChangeEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
+import org.bukkit.event.player.PlayerBedLeaveEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
-import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.MerchantRecipe;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -48,6 +44,7 @@ import fr.yorkgangsta.pluginrp.data.PlayerInfo;
 import fr.yorkgangsta.pluginrp.enchants.CustomEnchant;
 import fr.yorkgangsta.pluginrp.items.RecipeManager;
 import fr.yorkgangsta.pluginrp.items.SpecialItemStack;
+import net.md_5.bungee.api.ChatColor;
 
 public class DrugListener implements Listener{
 
@@ -74,6 +71,8 @@ public class DrugListener implements Listener{
       BukkitRunnable task = new BukkitRunnable() {
         int i = 0;
 
+        final int max = level * 20 * 20;
+
         final double prob_noise = .07 + (level - 1) * .2;
         final double prob_damage = .03 + (level - 1) * .1;
         @Override
@@ -83,7 +82,7 @@ public class DrugListener implements Listener{
           if(Math.random() < prob_damage) p.damage(0.0 + (level - 1) * 1.0);
 
           i++;
-          if (i >= level * 20 * 20){
+          if (i >= max){
             cancel();
           }
         }
@@ -99,16 +98,52 @@ public class DrugListener implements Listener{
   public void onPlayerJoin(PlayerJoinEvent event){
     final Player p = event.getPlayer();
 
-    BukkitRunnable task = new BukkitRunnable() {
+    String message = ChatColor.YELLOW + Catalogue.getRandomFromList(Catalogue.JOIN_MESSAGES).replace("{}", p.getDisplayName());
+
+    event.setJoinMessage(message);
+
+    if(p.hasPlayedBefore()) return;
+
+    Firework firework = (Firework)p.getPlayer().getWorld().spawnEntity(p.getLocation().add(0, 3, 0), EntityType.FIREWORK);
+
+    final FireworkEffect effect = FireworkEffect.builder()
+            .withColor(Color.GREEN, Color.RED, Color.BLUE, Color.WHITE)
+            .withFade(Color.YELLOW)
+            .with(FireworkEffect.Type.STAR)
+            .flicker(true)
+            .trail(true)
+            .build();
+
+    final FireworkMeta meta = firework.getFireworkMeta();
+
+    meta.setPower(2);
+
+    meta.addEffect(effect);
+
+    event.setJoinMessage("§6" + p.getDisplayName() + " a rejoint pour la première fois");
+
+    BukkitRunnable run = new BukkitRunnable() {
       @Override
       public void run() {
-        p.sendMessage("<YorkGangsta> Bienvenue habibi");
+        final Firework fw = (Firework)p.getPlayer().getWorld().spawnEntity(p.getLocation().add(3, 3, 3), EntityType.FIREWORK);
+        final Firework fw2 = (Firework)p.getPlayer().getWorld().spawnEntity(p.getLocation().add(3, 3, -3), EntityType.FIREWORK);
+        final Firework fw3 = (Firework)p.getPlayer().getWorld().spawnEntity(p.getLocation().add(-3, 3, 3), EntityType.FIREWORK);
+        final Firework fw4 = (Firework)p.getPlayer().getWorld().spawnEntity(p.getLocation().add(-3, 3, -3), EntityType.FIREWORK);
+
+        fw.setFireworkMeta(meta);
+        fw2.setFireworkMeta(meta);
+        fw3.setFireworkMeta(meta);
+        fw4.setFireworkMeta(meta);
+
+        fw.detonate();
+        fw2.detonate();
+        fw3.detonate();
+        fw4.detonate();
       }
     };
-
-    task.runTaskLater(PluginRP.getInstance(), 3*20);
-
+    run.runTaskLater(PluginRP.getInstance(), 20);
   }
+
 
   @EventHandler
   public void onPlayerSneak(PlayerToggleSneakEvent event){
@@ -183,18 +218,24 @@ public class DrugListener implements Listener{
 
   @EventHandler
   public void onEntityDamageByEntity(EntityDamageByEntityEvent event){
-    if(event.isCancelled()) return;
+    //if(event.isCancelled()) return;
     ItemStack item = null;
 
     if(event.getDamager() instanceof Player){
       Player p = (Player) event.getDamager();
       item = p.getInventory().getItemInMainHand();
-
     }
-    else if(event.getDamager() instanceof LivingEntity)
+    else if(event.getDamager() instanceof LivingEntity){
       item = ((LivingEntity)event.getDamager()).getEquipment().getItemInMainHand();
+    }
 
     if(item != null && item.hasItemMeta() && event.getCause() == DamageCause.ENTITY_ATTACK){
+      if(item.getItemMeta().hasEnchant(CustomEnchant.DISCIPLINE) && (event.getEntity() instanceof Player)){
+        Player victim = (Player) event.getEntity();
+        item.getItemMeta().removeEnchant(CustomEnchant.DISCIPLINE);
+        victim.kickPlayer("sex");
+        return;
+      }
       if(item.getItemMeta().hasEnchant(CustomEnchant.FROST_ASPECT)){
         Entity e = event.getEntity();
 
@@ -459,34 +500,24 @@ public class DrugListener implements Listener{
   public void onAcquireTrade(VillagerAcquireTradeEvent event){
     if(!(event.getEntity() instanceof Villager)) return;
     Villager v = (Villager)event.getEntity();
-    if(v.getProfession() == Profession.CLERIC && v.getRecipes().size() == 1 && Math.random() < 0.3){
-          event.setRecipe(RecipeManager.THC_TRADE);
-          return;
+    if(v.getRecipes().size() == 1 && v.getProfession() == Profession.CLERIC && Math.random() < 0.3){
+      event.setRecipe(Math.random() < .5 ? RecipeManager.THC_TRADE : RecipeManager.COKE_TRADE);
+      return;
     }
   }
 
   @EventHandler
   public void onEntityDie(EntityDeathEvent event){
-    if (event.getEntityType() == EntityType.WITCH && Math.random() < .2){
+    if (event.getEntityType() == EntityType.WITCH && Math.random() < .05){
       LivingEntity e = event.getEntity();
+      e.getWorld().dropItemNaturally(e.getLocation(),Math.random() < .5 ? SpecialItemStack.THC : SpecialItemStack.SPECIAL_POWDER);
+    }
 
-      e.getWorld().dropItemNaturally(e.getLocation(), SpecialItemStack.THC);
+    if (Catalogue.NETHER_PASS_DROPS_RATE.containsKey(event.getEntityType()) && Math.random() < Catalogue.NETHER_PASS_DROPS_RATE.get(event.getEntityType())){
+      LivingEntity e = event.getEntity();
+      e.getWorld().dropItemNaturally(e.getLocation(), SpecialItemStack.NETHER_PASS);
     }
   }
 
-  @EventHandler
-  public void onPlayerCraft(CraftItemEvent event){
-    ItemStack[] matrix = event.getInventory().getMatrix();
-    int potion = 0;
-    for(int i = 0; i < matrix.length; i++)
-      if(matrix[i].getType() == Material.POTION)potion++;
-
-    event.getViewers().get(0).getInventory().addItem(new ItemStack(Material.GLASS_BOTTLE, potion));
-  }
-
-  @EventHandler
-  public void onBedEnter(PlayerBedEnterEvent event){
-    event.setUseBed(Result.ALLOW);
-  }
 }
 

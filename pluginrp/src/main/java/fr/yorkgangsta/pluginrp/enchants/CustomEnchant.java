@@ -18,6 +18,8 @@ import fr.yorkgangsta.pluginrp.PluginRP;
 import fr.yorkgangsta.pluginrp.enchants.food.AlcoholicEnchantment;
 import fr.yorkgangsta.pluginrp.enchants.food.WeedEnchantment;
 import fr.yorkgangsta.pluginrp.enchants.special.CokeEnchantment;
+import fr.yorkgangsta.pluginrp.enchants.special.NetherPassEnchant;
+import fr.yorkgangsta.pluginrp.enchants.troll.DiciplingEnchantment;
 import fr.yorkgangsta.pluginrp.enchants.weapon.FreezeEnchantment;
 import fr.yorkgangsta.pluginrp.enchants.weapon.LifeStealEnchantment;
 import fr.yorkgangsta.pluginrp.enchants.weapon.PoisonEnchantment;
@@ -36,13 +38,15 @@ public abstract class CustomEnchant extends Enchantment{
 
   public static final CustomEnchant COKE = new CokeEnchantment(PluginRP.getInstance(), "Addiction", ChatColor.RED);
 
+  public static final CustomEnchant NETHER_PASS = new NetherPassEnchant(PluginRP.getInstance(), "Pass_Nether", ChatColor.BLUE);
+
   public static final CustomEnchant FROST_ASPECT = new FreezeEnchantment(PluginRP.getInstance(), "Aura_de_Glace", ChatColor.GRAY);
 
   public static final CustomEnchant POISON_ASPECT = new PoisonEnchantment(PluginRP.getInstance(), "Empoisonement", ChatColor.GRAY);
 
   public static final CustomEnchant LIFESTEAL = new LifeStealEnchantment(PluginRP.getInstance(), "Vol_de_Vie", ChatColor.GRAY);
 
-
+  public static final CustomEnchant DISCIPLINE = new DiciplingEnchantment(PluginRP.getInstance(), "Discipline", ChatColor.BLACK);
 
 
 
@@ -72,6 +76,7 @@ public abstract class CustomEnchant extends Enchantment{
   }
 
   public static boolean addCustomEnchantment(ItemStack item, Enchantment enchant, int level) {
+    if(enchant == null) return false;
     if(!(enchant instanceof CustomEnchant)) {
       item.addUnsafeEnchantment(enchant, level);
       return true;
@@ -87,21 +92,20 @@ public abstract class CustomEnchant extends Enchantment{
     int safeLevel = Math.min(ench.getMaxLevel(), Math.max(level, ench.getStartLevel()));
     item.addUnsafeEnchantment(ench, safeLevel);
 
-    ItemMeta meta = item.getItemMeta();
-    List<String> lore = meta.getLore();
-    if (lore == null) lore = new ArrayList<>();
+    ItemMeta meta = item.hasItemMeta() ? item.getItemMeta() : Bukkit.getItemFactory().getItemMeta(item.getType());
+    List<String> lore = new ArrayList<>();
 
     String enchLore = ench.getColor() + ench.getName() + " " + intToRoman(safeLevel);
-
-    for(String line : lore)
-      if(line.toLowerCase().startsWith(ench.getName().toLowerCase()))
-        lore.remove(line);
-
     lore.add(enchLore);
-    meta.setLore(lore);
+
+    if(meta != null && meta.hasLore())
+      for(String line : meta.getLore())
+        if(!line.toLowerCase().startsWith(ench.getName().toLowerCase()))
+          lore.add(line);
+
+    if(meta != null)
+      meta.setLore(lore);
     item.setItemMeta(meta);
-
-
     return true;
 }
 

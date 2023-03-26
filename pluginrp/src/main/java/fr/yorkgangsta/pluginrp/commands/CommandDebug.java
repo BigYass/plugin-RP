@@ -1,7 +1,9 @@
 package fr.yorkgangsta.pluginrp.commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -103,6 +105,30 @@ public class CommandDebug implements CommandExecutor{
 
       return true;
 
+    }
+    else if(cmd.getName().equalsIgnoreCase("pluginrp_teleport")){
+      if (args.length < 1) return false;
+      if(!(sender instanceof Player)) return true;
+      Player p = (Player) sender;
+
+      World world = Bukkit.getWorld(args[0]);
+
+      if(world == null){
+        p.sendMessage(PluginRP.PREFIX + "§cLe monde §6" + args[0] + " §cn'a pas été trouvé...");
+        return true;
+      }
+
+      Location newLocation = p.getLocation();
+
+      newLocation.setWorld(world);
+
+      p.teleport(newLocation);
+      return true;
+    }
+    else if(cmd.getName().equalsIgnoreCase("pluginrp_summon")){
+      if(!(sender instanceof Player)) return true;
+      sender.sendMessage("§7Commande non faite...");
+      return true;
     }
 
     return false;

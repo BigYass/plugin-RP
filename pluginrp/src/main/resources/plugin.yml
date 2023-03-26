@@ -35,3 +35,15 @@ commands:
     permission: pluginrp.admin
     permission-message: Tu n'a pas accès à cette commande. Il faut être admin
     usage: "Erreur de syntax! Utilisation : /penchant <enchantment> [niveau]"
+  pluginrp_teleport:
+    description: Se téléporte dans un monde différent
+    aliases: [pteleport]
+    permission: pluginrp.admin
+    permission-message: Tu n'a pas accès à cette commande. Il faut être admin
+    usage: "Erreur de syntax! Utilisation : /pteleport <monde>"
+  pluginrp_summon:
+    description: Invoque des entités spéciales
+    aliases: [psummon]
+    permission: pluginrp.admin
+    permission-message: Tu n'a pas accès à cette commande. Il faut être admin
+    usage: "Erreur de syntax! Utilisation : /psummon <mob>"

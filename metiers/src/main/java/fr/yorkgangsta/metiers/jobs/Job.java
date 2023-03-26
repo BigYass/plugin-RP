@@ -16,6 +16,7 @@ import fr.yorkgangsta.metiers.ability.Ability;
 import fr.yorkgangsta.metiers.attributes.AbillityOnSneakAttribute;
 import fr.yorkgangsta.metiers.attributes.BlockUseAttribute;
 import fr.yorkgangsta.metiers.attributes.EffectAttribute;
+import fr.yorkgangsta.metiers.attributes.EntityBreedAttribute;
 import fr.yorkgangsta.metiers.attributes.EntityInteractAttribute;
 import fr.yorkgangsta.metiers.attributes.ItemUseAttribute;
 import fr.yorkgangsta.metiers.attributes.ItemUseOnBlockAttribute;
@@ -34,6 +35,7 @@ public class Job {
   private HashSet<Material> itemOnEntityUsable = new HashSet<>();
   private HashMap<Material, HashSet<Material>> itemOnBlockUsable = new HashMap<>();
   private HashSet<EntityType> entityAllowed = new HashSet<>();
+  private HashSet<EntityType> entityBreedAllowed = new HashSet<>();
 
   private HashSet<EntityType> entityShearUsable = new HashSet<>();
   private HashSet<Material> toolUsable = new HashSet<>();
@@ -46,7 +48,6 @@ public class Job {
   private final String name;
 
   public static final Job ALCHIMISTE = new Job(Arrays.asList(
-    new BlockUseAttribute("UseSmithingTable", Material.SMITHING_TABLE),
     new BlockUseAttribute("UseAnvil", Material.ANVIL),
     new BlockUseAttribute("UseChippedAnvil", Material.CHIPPED_ANVIL),
     new BlockUseAttribute("UseDamagadeAnvil", Material.DAMAGED_ANVIL),
@@ -69,7 +70,17 @@ public class Job {
     new ItemUseOnBlockAttribute("UseDiamondHoe", Material.DIAMOND_HOE, Catalogue.dirtBlocks),
     new ItemUseOnBlockAttribute("UseNetheriteHoe", Material.NETHERITE_HOE, Catalogue.dirtBlocks),
 
-    new ShearEntityAttribute("ShearSheep", EntityType.SHEEP)
+    new ShearEntityAttribute("ShearSheep", EntityType.SHEEP),
+
+    new EntityBreedAttribute("BreedSheep", EntityType.SHEEP),
+    new EntityBreedAttribute("BreedCow", EntityType.COW),
+    new EntityBreedAttribute("BreedMushroomCow", EntityType.MUSHROOM_COW),
+    new EntityBreedAttribute("BreedChicken", EntityType.CHICKEN),
+    new EntityBreedAttribute("BreedPig", EntityType.PIG),
+    new EntityBreedAttribute("BreedHorse", EntityType.HORSE)
+
+
+
 
     ), "Fermier", -2.0, false);
 
@@ -78,6 +89,8 @@ public class Job {
     new EffectAttribute("EffectFastMining", new PotionEffect(PotionEffectType.FAST_DIGGING, 200, 1)),
     new EffectAttribute("EffectNightVision", new PotionEffect(PotionEffectType.NIGHT_VISION, 200, 0)),
 
+
+    new BlockUseAttribute("UseSmithingTable", Material.SMITHING_TABLE),
     new BlockUseAttribute("UseStoneCutter", Material.STONECUTTER),
 
     new ToolUseAttribute("UseDiamondPickaxe", Material.DIAMOND_PICKAXE),
@@ -136,6 +149,9 @@ public class Job {
       else if (attribute instanceof EntityInteractAttribute){
         entityAllowed.add(((EntityInteractAttribute)attribute).getEntity());
       }
+      else if (attribute instanceof EntityBreedAttribute){
+        entityBreedAllowed.add(((EntityBreedAttribute)attribute).getEntity());
+      }
       else if (attribute instanceof ToolUseAttribute){
         toolUsable.add(((ToolUseAttribute) attribute).getType());
       }
@@ -151,7 +167,7 @@ public class Job {
   }
 
   public static Job getJobByName(String name) {
-    return jobs.get(name);
+    return jobs.get(name.toLowerCase());
   }
 
   public static Job getDefaultJob() {
@@ -184,6 +200,10 @@ public class Job {
 
   public boolean canShearEntity(EntityType type) {
     return entityShearUsable.contains(type);
+  }
+
+  public boolean canBreedEntity(EntityType type){
+    return entityBreedAllowed.contains(type);
   }
 
   public boolean canUseTool(Material type){

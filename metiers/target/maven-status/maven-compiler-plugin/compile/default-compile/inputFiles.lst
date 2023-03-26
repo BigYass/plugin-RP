@@ -3,6 +3,7 @@
 /home/bigyass/Documents/Dev/Plugin Minecraft/metiers/src/main/java/fr/yorkgangsta/metiers/jobs/RoleTabCompleter.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/metiers/src/main/java/fr/yorkgangsta/metiers/ability/ResistanceAbilityRunnable.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/metiers/src/main/java/fr/yorkgangsta/metiers/ability/Ability.java
+/home/bigyass/Documents/Dev/Plugin Minecraft/metiers/src/main/java/fr/yorkgangsta/metiers/attributes/EntityBreedAttribute.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/metiers/src/main/java/fr/yorkgangsta/metiers/attributes/ItemUseOnBlockAttribute.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/metiers/src/main/java/fr/yorkgangsta/metiers/attributes/JobAttributeListener.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/metiers/src/main/java/fr/yorkgangsta/metiers/attributes/ShearEntityAttribute.java
@@ -15,6 +16,7 @@
 /home/bigyass/Documents/Dev/Plugin Minecraft/metiers/src/main/java/fr/yorkgangsta/metiers/attributes/EntityInteractAttribute.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/metiers/src/main/java/fr/yorkgangsta/metiers/attributes/ItemUseOnEntityAttribute.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/metiers/src/main/java/fr/yorkgangsta/metiers/attributes/PotionEffectRunnable.java
+/home/bigyass/Documents/Dev/Plugin Minecraft/metiers/src/main/java/fr/yorkgangsta/metiers/jobs/PlayerSave.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/metiers/src/main/java/fr/yorkgangsta/metiers/attributes/ToolUseAttribute.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/metiers/src/main/java/fr/yorkgangsta/metiers/jobs/PlayerInfo.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/metiers/src/main/java/fr/yorkgangsta/metiers/attributes/JobAttribute.java

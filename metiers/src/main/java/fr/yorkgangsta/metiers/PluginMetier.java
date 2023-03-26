@@ -21,17 +21,19 @@ public class PluginMetier extends JavaPlugin
 
     register();
 
-    PlayerInfo.load();
     Bukkit.getLogger().info("§eMetiers enabled!");
-    
+
   }
 
   public void onDisable()
   {
+    PlayerInfo.save();
     Bukkit.getLogger().info("§cmetiers disabled");
   }
 
   private void register(){
+    PlayerInfo.load();
+
     getServer().getPluginManager().registerEvents(new JobAttributeListener(), this);
 
     getCommand("role").setExecutor(new RoleExecutor());
