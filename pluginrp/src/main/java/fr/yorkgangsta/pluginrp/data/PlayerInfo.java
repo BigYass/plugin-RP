@@ -153,10 +153,10 @@ public class PlayerInfo {
 
           p.sendTitle("", "§7Besoin de §fCoke§7...§r", 10, 70, 20);
 
+          p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, updateRate + 20, 0));
+          p.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, updateRate + 20, 0));
         }
 
-        p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, updateRate + 20, 0));
-        p.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, updateRate + 20, 0));
 
       }
 

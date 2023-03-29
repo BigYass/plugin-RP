@@ -52,7 +52,7 @@ public class Job {
     new BlockUseAttribute("UseChippedAnvil", Material.CHIPPED_ANVIL),
     new BlockUseAttribute("UseDamagadeAnvil", Material.DAMAGED_ANVIL),
     new BlockUseAttribute("UseGrindStone", Material.GRINDSTONE),
-    new BlockUseAttribute("UseBlastFurnace", Material.BLAST_FURNACE),
+    new BlockUseAttribute("UseSmithingTable", Material.SMITHING_TABLE),
     new BlockUseAttribute("UseEnchantingTable", Material.ENCHANTING_TABLE),
     new BlockUseAttribute("UseBrewingStand", Material.BREWING_STAND)
     ), "Alchimiste", -6.0, false);
@@ -90,8 +90,8 @@ public class Job {
     new EffectAttribute("EffectNightVision", new PotionEffect(PotionEffectType.NIGHT_VISION, 200, 0)),
 
 
-    new BlockUseAttribute("UseSmithingTable", Material.SMITHING_TABLE),
     new BlockUseAttribute("UseStoneCutter", Material.STONECUTTER),
+    new BlockUseAttribute("UseBlastFurnace", Material.BLAST_FURNACE),
 
     new ToolUseAttribute("UseDiamondPickaxe", Material.DIAMOND_PICKAXE),
     new ToolUseAttribute("UseNetheritePickaxe", Material.NETHERITE_PICKAXE),

@@ -17,7 +17,6 @@ import org.bukkit.entity.Villager;
 import org.bukkit.entity.Villager.Profession;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.Event.Result;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -25,11 +24,10 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.VillagerAcquireTradeEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerBedEnterEvent;
-import org.bukkit.event.player.PlayerBedLeaveEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
@@ -71,9 +69,9 @@ public class DrugListener implements Listener{
       BukkitRunnable task = new BukkitRunnable() {
         int i = 0;
 
-        final int max = level * 20 * 20;
+        final int max = level * 30;
 
-        final double prob_noise = .07 + (level - 1) * .2;
+        final double prob_noise = .04 + (level - 1) * .1;
         final double prob_damage = .03 + (level - 1) * .1;
         @Override
         public void run() {
@@ -144,17 +142,12 @@ public class DrugListener implements Listener{
     run.runTaskLater(PluginRP.getInstance(), 20);
   }
 
+  @EventHandler void onLeave(PlayerQuitEvent event){
+    final Player p = event.getPlayer();
 
-  @EventHandler
-  public void onPlayerSneak(PlayerToggleSneakEvent event){
-    Player p = event.getPlayer();
-    if(p.getName().equalsIgnoreCase("YorkGangsta"))
-      p.getWorld().playSound(p.getLocation(), Sound.ENTITY_PUFFER_FISH_FLOP, 2.0f, 1.0f);
-    if(p.getName().equalsIgnoreCase("Mikokodu94"))
-      p.getWorld().playSound(p.getLocation(), Sound.BLOCK_BREWING_STAND_BREW, 2.0f, .8f + (float)(Math.random() * .4f));
-    if(p.getName().equalsIgnoreCase("Oxdavik"))
-      p.getWorld().playSound(p.getLocation(), Sound.ENTITY_PUFFER_FISH_FLOP, 2.0f, .8f + (float)(Math.random() * .4f));
+    String message = ChatColor.YELLOW + Catalogue.getRandomFromList(Catalogue.LEAVE_MESSAGES).replace("{}", p.getDisplayName());
 
+    event.setQuitMessage(message);
   }
 
   @EventHandler

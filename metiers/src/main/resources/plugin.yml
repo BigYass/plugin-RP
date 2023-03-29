@@ -1,6 +1,6 @@
 name: metiers
 main: fr.yorkgangsta.metiers.PluginMetier
-version: 0.0.1
+version: 1.0.0
 api-version: 1.19
 
 permissions:

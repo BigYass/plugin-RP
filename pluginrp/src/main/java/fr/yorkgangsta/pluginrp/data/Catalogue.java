@@ -2,7 +2,6 @@ package fr.yorkgangsta.pluginrp.data;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -45,7 +44,7 @@ public class Catalogue {
     "{} vient d'arriver.",
     "Un nouveau combatant fait son apprition: {}",
     "{} est maintenant présent",
-    "{} nous rejoint. D'ailleur voici son ip : 82.159.24.129! §7(C'est une fausse)"
+    "{} nous rejoint. D'ailleur voici son ip : 82.159.24.129!"
   );
 
   public static final List<String> LEAVE_MESSAGES = Arrays.asList(
@@ -58,7 +57,7 @@ public class Catalogue {
     "{} a quitté le §kserveur",
     "{} vient de partir...",
     "{} n'est plus présent",
-    "{} nous quitte. Pour la peine voici son ip : 85.154.24.129! §7(C'est une fausse)"
+    "{} nous quitte. Pour la peine voici son ip : 85.154.24.129!"
   );
 
 

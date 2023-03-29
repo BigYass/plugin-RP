@@ -7,7 +7,7 @@
 
 	<groupId>fr.yorkgangsta.metiers</groupId>
 	<artifactId>metiers</artifactId>
-	<version>0.0.1</version>
+	<version>1.0.0</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -41,9 +41,9 @@
 		<dependency>
 			<groupId>fr.yorkgangsta.pluginrp</groupId>
 			<artifactId>pluginrp</artifactId>
-			<version>0.0.1</version>
+			<version>1.0.0</version>
 			<scope>system</scope>
-			<systemPath>${project.basedir}/../pluginrp/target/pluginrp-0.0.1.jar</systemPath>
+			<systemPath>${project.basedir}/../pluginrp/target/pluginrp-1.0.0.jar</systemPath>
 	 </dependency>
 	</dependencies>
 

@@ -27,20 +27,20 @@ public class RoleTabCompleter implements TabCompleter{
             if(name.toLowerCase().startsWith(args[1], 0))
               s.add(name);
           break;
-          
+
         case "info":
           for(Player p : Bukkit.getOnlinePlayers())
-            s.add(p.getName());
+            if(p.getName().toLowerCase().startsWith(args[1], 0)) s.add(p.getName());
           break;
-          
+
         default:
           break;
       }
     }
-    
+
     else if(args.length == 3){
       for(Player p : Bukkit.getOnlinePlayers())
-            s.add(p.getName());
+        if(p.getName().toLowerCase().startsWith(args[1], 0)) s.add(p.getName());
     }
     return s;
   }
