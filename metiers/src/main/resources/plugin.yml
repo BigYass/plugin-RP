@@ -7,6 +7,9 @@ permissions:
   metiers.admin:
     description: Les commandes administrateurs du plugin
     default: op
+  metiers.mayor:
+    description: Les commandes du maire du plugin
+    default: op
   metiers.user:
     description: Les commandes utilisateurs du plugin
     default: true
@@ -16,14 +19,28 @@ permissions:
     children:
       metiers.admin: true
       metiers.user: true
+      metiers.mayor: true
 
 commands:
   commands:
   role:
     description: Permets de faire les fonctions des metiers
     aliases: []
-    permission: pluginrp.admin
+    permission: metiers.admin
     permission-message: Tu n'a pas accès à cette commande. Il faut être admin espece de hmar
     usage: "Erreur de syntax!"
+  maire:
+    description: Permets de faire les commandes liés au maire
+    aliases: []
+    permission: metiers.mayor
+    permission-message: Tu n'a pas accès à cette commande. Il faut être maire espece de hmar
+    usage: "Erreur de syntax!"
+  ping:
+    description: Ping le serveur et permet d'obtenir des informations sur le client
+    aliases: []
+    permission: metiers.user
+    permission-message: Tu n'a pas accès à cette commande. Je me demande pourquoi
+    usage: "Erreur de syntax?"
+
 
 depend: [pluginrp]

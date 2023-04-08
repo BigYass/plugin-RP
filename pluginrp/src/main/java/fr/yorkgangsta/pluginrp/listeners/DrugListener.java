@@ -20,15 +20,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.VillagerAcquireTradeEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.potion.PotionEffect;
@@ -182,7 +181,6 @@ public class DrugListener implements Listener{
       }
       else if(item.getType() == Material.GLASS_BOTTLE){
         if(p.isSneaking() && p.getTotalExperience() >= 10 && p.getCooldown(Material.GLASS_BOTTLE) == 0){
-          if(p.getGameMode() != GameMode.CREATIVE) item.setAmount(item.getAmount() - 1);
           ItemStack bottleExp = new ItemStack(Material.EXPERIENCE_BOTTLE);
 
           p.playSound(p.getLocation(), Sound.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 1.0f, .8f + ((float)Math.random() * .4f));
@@ -192,6 +190,7 @@ public class DrugListener implements Listener{
           p.setCooldown(Material.GLASS_BOTTLE, 7);
 
           p.getInventory().addItem(bottleExp);
+          if(p.getGameMode() != GameMode.CREATIVE) item.setAmount(item.getAmount() - 1);
           p.updateInventory();
         }
 
@@ -200,18 +199,20 @@ public class DrugListener implements Listener{
   }
 
   @EventHandler
-  public void onPlayerDie(PlayerDeathEvent event){
-    if(!(event.getEntity() instanceof Player)) return;
-    Player p = (Player)event.getEntity();
+  private void onTest(PlayerGameModeChangeEvent event){
+    if(event.getNewGameMode() == GameMode.SPECTATOR || event.getNewGameMode() == GameMode.CREATIVE){
+      PlayerInfo info = PlayerInfo.getPlayerInfo(event.getPlayer());
+      info.setAlcoolLevel(0);
 
-    PlayerInfo info = PlayerInfo.getPlayerInfo(p);
-
-    info.setAlcoolLevel(0);
+      if(event.getNewGameMode() == GameMode.CREATIVE){
+        info.setCokeLevel(1);
+      }
+    }
   }
 
   @EventHandler
   public void onEntityDamageByEntity(EntityDamageByEntityEvent event){
-    //if(event.isCancelled()) return;
+    if(event.isCancelled()) return;
     ItemStack item = null;
 
     if(event.getDamager() instanceof Player){
@@ -501,7 +502,7 @@ public class DrugListener implements Listener{
 
   @EventHandler
   public void onEntityDie(EntityDeathEvent event){
-    if (event.getEntityType() == EntityType.WITCH && Math.random() < .05){
+    if (event.getEntityType() == EntityType.WITCH && Math.random() < .7){
       LivingEntity e = event.getEntity();
       e.getWorld().dropItemNaturally(e.getLocation(),Math.random() < .5 ? SpecialItemStack.THC : SpecialItemStack.SPECIAL_POWDER);
     }

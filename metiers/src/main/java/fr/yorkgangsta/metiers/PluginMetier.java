@@ -3,10 +3,12 @@ package fr.yorkgangsta.metiers;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import fr.yorkgangsta.metiers.attributes.JobAttributeListener;
+import fr.yorkgangsta.metiers.commands.MayorExecutor;
+import fr.yorkgangsta.metiers.commands.MayorTabCompletor;
+import fr.yorkgangsta.metiers.commands.RoleExecutor;
+import fr.yorkgangsta.metiers.commands.RoleTabCompleter;
 import fr.yorkgangsta.metiers.jobs.PlayerInfo;
-import fr.yorkgangsta.metiers.jobs.RoleExecutor;
-import fr.yorkgangsta.metiers.jobs.RoleTabCompleter;
+import fr.yorkgangsta.metiers.listeners.JobAttributeListener;
 
 /*
  * metiers java plugin
@@ -37,7 +39,13 @@ public class PluginMetier extends JavaPlugin
     getServer().getPluginManager().registerEvents(new JobAttributeListener(), this);
 
     getCommand("role").setExecutor(new RoleExecutor());
+    getCommand("maire").setExecutor(new MayorExecutor());
+
     getCommand("role").setTabCompleter(new RoleTabCompleter());
+    getCommand("maire").setTabCompleter(new MayorTabCompletor());
+
+
+
   }
 
   public void reload(){

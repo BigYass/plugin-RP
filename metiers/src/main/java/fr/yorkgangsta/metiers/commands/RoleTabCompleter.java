@@ -1,4 +1,4 @@
-package fr.yorkgangsta.metiers.jobs;
+package fr.yorkgangsta.metiers.commands;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import fr.yorkgangsta.metiers.jobs.Job;
 
 public class RoleTabCompleter implements TabCompleter{
 
@@ -40,7 +41,7 @@ public class RoleTabCompleter implements TabCompleter{
 
     else if(args.length == 3){
       for(Player p : Bukkit.getOnlinePlayers())
-        if(p.getName().toLowerCase().startsWith(args[1], 0)) s.add(p.getName());
+        if(p.getName().toLowerCase().startsWith(args[2].toLowerCase(), 0)) s.add(p.getName());
     }
     return s;
   }

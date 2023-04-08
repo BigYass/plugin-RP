@@ -1,7 +1,9 @@
 package fr.yorkgangsta.pluginrp.data;
 
 import java.util.HashMap;
+import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.WeatherType;
@@ -29,7 +31,7 @@ public class PlayerInfo {
 
   private static final String nerfHealthName = "tempCokeNerf";
 
-  private static HashMap<Player, PlayerInfo> playersInfo = new HashMap<>();
+  private static HashMap<UUID, PlayerInfo> playersInfo = new HashMap<>();
 
   private static final BukkitRunnable update = new BukkitRunnable() {
     public void run() {
@@ -41,13 +43,12 @@ public class PlayerInfo {
   protected int cokeLevel = 0;
 
   public PlayerInfo(Player player){
-    playersInfo.put(player, this);
-
+    playersInfo.put(player.getUniqueId(), this);
   }
 
   public static PlayerInfo getPlayerInfo(Player p) {
-    if(playersInfo.containsKey(p))
-      return playersInfo.get(p);
+    if(playersInfo.containsKey(p.getUniqueId()))
+      return playersInfo.get(p.getUniqueId());
     else
       return new PlayerInfo(p);
   }
@@ -124,9 +125,10 @@ public class PlayerInfo {
 
   private static void update(){
 
-    for(Player p : playersInfo.keySet()){
-      if(!p.isOnline()) continue;
-      PlayerInfo info = playersInfo.get(p);
+    for(UUID id : playersInfo.keySet()){
+      Player p = Bukkit.getPlayer(id);
+      if(p == null || !p.isOnline()) continue;
+      PlayerInfo info = playersInfo.get(id);
 
       if(info.getAlcoolLevel() > 20){
         int frequence = 4;
@@ -170,6 +172,14 @@ public class PlayerInfo {
         info.addCokeLevel(-1);
 
     }
+  }
+
+  public void load(){
+
+  }
+
+  public void save(){
+
   }
 
   public int getAlcoolLevel(){ return alcoolLevel; }

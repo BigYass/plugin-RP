@@ -54,7 +54,15 @@ public class SpecialItemStack extends ItemStack{
 
   public static SpecialItemStack EHTANOL_POWDER = new SpecialItemStack(Material.GUNPOWDER, "§fPoudre Imbibé", Arrays.asList("§7Ingrédient Spécial"), CustomEnchant.VANISHING_CURSE, 1);
 
+  public static SpecialItemStack ONE_DOLLAR = new SpecialItemStack(Material.PAPER, "§e1$",Arrays.asList("§7Un billet de §51$") , null, 1);
+
+  public static SpecialItemStack TEN_DOLLARS = new SpecialItemStack(Material.PAPER, "§c10$",Arrays.asList("§7Un billet de §510$") , null, 1);
+
+  public static SpecialItemStack HUNDREAD_DOLLARS = new SpecialItemStack(Material.PAPER, "§a100$",Arrays.asList("§7Un billet de §5100$") , null, 1);
+
   public static SpecialItemStack NETHER_PASS = new SpecialItemStack(Material.PAPER, "§cTicket §4Nether",null , CustomEnchant.NETHER_PASS, 1);
+
+
 
   public static SpecialItemStack DICIPLINE_STICK = new SpecialItemStack(Material.STICK, "§r§cLe baton de la discipline <3",null , CustomEnchant.DISCIPLINE, 1);
 

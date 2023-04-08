@@ -1,4 +1,4 @@
-package fr.yorkgangsta.metiers.jobs;
+package fr.yorkgangsta.metiers.commands;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,6 +12,8 @@ import org.bukkit.entity.Player;
 
 import fr.yorkgangsta.metiers.PluginMetier;
 import fr.yorkgangsta.metiers.attributes.JobAttribute;
+import fr.yorkgangsta.metiers.jobs.Job;
+import fr.yorkgangsta.metiers.jobs.PlayerInfo;
 
 public class RoleExecutor implements CommandExecutor{
 
@@ -29,9 +31,10 @@ public class RoleExecutor implements CommandExecutor{
     if(args.length >= 1){
       switch (args[0].toLowerCase()) {
         case "change":
-        if (!(sender instanceof Player)) return true;
+          Player p = null;
+          if (!(sender instanceof Player) && args.length < 3) return true;
+          else if (sender instanceof Player) p = (Player) sender;
 
-        Player p = (Player) sender;
           if(args.length < 2){
             sender.sendMessage("§c/!\\ §6Erreur syntax§7!§6 Utilsation §7: /§6role change §7<§6role§7> [§6joueur§7]");
             return true;
@@ -40,7 +43,7 @@ public class RoleExecutor implements CommandExecutor{
           Job newJob = Job.getJobByName(args[1].toLowerCase());
 
           if(newJob == null){
-            p.sendMessage("§c/!\\ §6Le role §7\"§c" + args[1] + "§7\" est introuvable.\n Voici la liste des roles : §r" + Job.getJobNames());
+            sender.sendMessage("§c/!\\ §6Le role §7\"§c" + args[1] + "§7\" est introuvable.\n Voici la liste des roles : §r" + Job.getJobNames());
             return true;
           }
 
@@ -49,14 +52,18 @@ public class RoleExecutor implements CommandExecutor{
           if(args.length >= 3){
             target = Bukkit.getPlayer(args[2]);
             if(target == null){
-              p.sendMessage("§c/!\\ §6Le joueur §7\"§c" + args[2] + "§7\" est déconnecté ou n'existe pas.");
+              sender.sendMessage("§c/!\\ §6Le joueur §7\"§c" + args[2] + "§7\" est déconnecté ou n'existe pas.");
               return true;
             }
           }
 
+          if(target == null){
+            return false;
+          }
+
           PlayerInfo info = PlayerInfo.getInfo(target);
           info.changeJob(newJob);
-          p.sendMessage("§6Le joueur §e" + target.getDisplayName() + " §6est maintenant un §e" + newJob.getName());
+          sender.sendMessage("§6Le joueur §e" + target.getDisplayName() + " §6est maintenant un §e" + newJob.getName());
 
           return true;
         case "info":

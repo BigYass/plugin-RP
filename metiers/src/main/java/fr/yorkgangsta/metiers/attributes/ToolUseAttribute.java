@@ -10,7 +10,7 @@ public class ToolUseAttribute extends JobAttribute{
 
 
   public ToolUseAttribute(String name, Material type){
-    super(name, "§cPermet d'utiliser l'outil §7: §6" + type.getItemTranslationKey());
+    super(name, "§cPermet d'utiliser l'outil §7: §6" + type);
     this.type = type;
     forbiddenTools.add(type);
   }

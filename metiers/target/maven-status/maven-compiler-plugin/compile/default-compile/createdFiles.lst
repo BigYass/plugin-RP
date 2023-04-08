@@ -9,17 +9,12 @@ fr/yorkgangsta/metiers/ability/ResistanceAbilityRunnable.class
 fr/yorkgangsta/metiers/attributes/JobAttribute.class
 fr/yorkgangsta/metiers/attributes/EffectAttribute.class
 fr/yorkgangsta/metiers/jobs/PlayerInfo.class
-fr/yorkgangsta/metiers/jobs/RoleTabCompleter.class
-fr/yorkgangsta/metiers/attributes/JobAttributeListener.class
 fr/yorkgangsta/metiers/ability/Ability$AbilityType.class
 fr/yorkgangsta/metiers/attributes/ShearEntityAttribute.class
 fr/yorkgangsta/metiers/ability/Ability$1.class
-fr/yorkgangsta/metiers/attributes/JobAttributeListener$1$1.class
-fr/yorkgangsta/metiers/attributes/JobAttributeListener$1.class
 fr/yorkgangsta/metiers/attributes/AbillityOnSneakAttribute.class
 fr/yorkgangsta/metiers/attributes/BlockUseAttribute.class
 fr/yorkgangsta/metiers/ability/PlayerRunnable$1.class
-fr/yorkgangsta/metiers/jobs/RoleExecutor.class
 fr/yorkgangsta/metiers/attributes/ToolUseAttribute.class
 fr/yorkgangsta/metiers/attributes/ItemUseOnBlockAttribute.class
 fr/yorkgangsta/metiers/attributes/EntityBreedAttribute.class
