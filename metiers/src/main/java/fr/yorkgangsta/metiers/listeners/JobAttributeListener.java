@@ -24,6 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.event.entity.EntityBreedEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -340,11 +341,11 @@ public class JobAttributeListener implements Listener{
   @EventHandler
   private void onBlockDestroy(BlockDropItemEvent event){
     if(event.isCancelled()) return;
+    Bukkit.broadcastMessage("Block cassé");
     if(event.getPlayer() == null || !(Catalogue.hoes.contains(event.getPlayer().getInventory().getItemInMainHand().getType())) ){
       for(int i = 0; i < event.getItems().size(); i++){
         Item item = event.getItems().get(i);
         if(Catalogue.cropsResults.contains(item.getItemStack().getType())){
-          if(event.getPlayer() != null) event.getPlayer().sendMessage("Type : " + item.getItemStack().getType());
           event.getItems().clear();
           if(event.getPlayer() != null){
             event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "Il faudrait une houe pour récolter correctement"));
