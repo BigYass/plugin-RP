@@ -9,9 +9,6 @@ import java.util.Set;
 
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
-import org.bukkit.permissions.PermissionAttachment;
-import org.bukkit.permissions.PermissionAttachmentInfo;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import fr.yorkgangsta.metiers.ability.Ability;
@@ -29,7 +26,6 @@ import fr.yorkgangsta.metiers.attributes.PotionEffectImmunityAttribute;
 import fr.yorkgangsta.metiers.attributes.ShearEntityAttribute;
 import fr.yorkgangsta.metiers.attributes.ToolUseAttribute;
 import fr.yorkgangsta.metiers.attributes.WeaponUseAttribute;
-import fr.yorkgangsta.metiers.data.Catalogue;
 
 public class Job {
   private static HashMap<String, Job> jobs = new HashMap<>();
@@ -47,7 +43,6 @@ public class Job {
   private HashSet<Material> toolUsable = new HashSet<>();
   private HashSet<Material> weaponUsable = new HashSet<>();
 
-
   private HashSet<PotionEffectType> effectsImunity = new HashSet<>();
   private ArrayList<EffectAttribute> effects = new ArrayList<>();
   private ArrayList<Ability> abilities = new ArrayList<>();
@@ -59,125 +54,114 @@ public class Job {
   private final String permission;
 
   public static final Job ALCHIMISTE = new Job(Arrays.asList(
-    new AbillityOnSneakAttribute("OnSneakInvisibility", Ability.INVISIBILITY_ON_SNEAK),
-    new BlockUseAttribute("UseEnchantingTable", Material.ENCHANTING_TABLE),
-    new BlockUseAttribute("UseBrewingStand", Material.BREWING_STAND)
-    ), "Alchimiste", -2.0, false, "metiers.user");
+      AbillityOnSneakAttribute.INVISIBILITY,
+      BlockUseAttribute.ENCHANTING_TABLE,
+      BlockUseAttribute.BREWING_STAND), "Alchimiste", -2.0, false, "metiers.user");
 
   public static final Job BLACKSMITH = new Job(Arrays.asList(
-      new BlockUseAttribute("UseAnvil", Material.ANVIL),
-      new BlockUseAttribute("UseChippedAnvil", Material.CHIPPED_ANVIL),
-      new BlockUseAttribute("UseDamagadeAnvil", Material.DAMAGED_ANVIL),
-      new BlockUseAttribute("UseGrindStone", Material.GRINDSTONE),
-      new BlockUseAttribute("UseSmithingTable", Material.SMITHING_TABLE)
-      ), "Forgeron", 0.0, false, "metiers.user");
-
-
+      BlockUseAttribute.ANVIL,
+      BlockUseAttribute.CHIPPED_ANVIL,
+      BlockUseAttribute.DAMAGED_ANVIL,
+      BlockUseAttribute.GRINDSTONE,
+      BlockUseAttribute.SMITHING_TABLE), "Forgeron", 0.0, false, "metiers.user");
 
   public static final Job FARMER = new Job(Arrays.asList(
-    new BlockUseAttribute("UseComposter", Material.COMPOSTER),
+      BlockUseAttribute.COMPOSTER,
 
-    new ItemUseAttribute("UseBoneMeal", Material.BONE_MEAL),
-    new ItemUseOnBlockAttribute("UseWoodenHoe", Material.WOODEN_HOE, Catalogue.dirtBlocks),
-    new ItemUseOnBlockAttribute("UseStoneHoe", Material.STONE_HOE, Catalogue.dirtBlocks),
-    new ItemUseOnBlockAttribute("UseGoldenHoe", Material.GOLDEN_HOE, Catalogue.dirtBlocks),
-    new ItemUseOnBlockAttribute("UseIronHoe", Material.IRON_HOE, Catalogue.dirtBlocks),
-    new ItemUseOnBlockAttribute("UseDiamondHoe", Material.DIAMOND_HOE, Catalogue.dirtBlocks),
-    new ItemUseOnBlockAttribute("UseNetheriteHoe", Material.NETHERITE_HOE, Catalogue.dirtBlocks),
+      ItemUseAttribute.BONE_MEAL,
 
-    new ToolUseAttribute("UseToolWoodenHoe", Material.WOODEN_HOE),
-    new ToolUseAttribute("UseToolStoneHoe", Material.STONE_HOE),
-    new ToolUseAttribute("UseToolGoldenHoe", Material.GOLDEN_HOE),
-    new ToolUseAttribute("UseToolIronHoe", Material.IRON_HOE),
-    new ToolUseAttribute("UseToolDiamondHoe", Material.DIAMOND_HOE),
-    new ToolUseAttribute("UseToolNetheriteHoe", Material.NETHERITE_HOE),
+      ItemUseOnBlockAttribute.WOODEN_HOE_ON_DIRT,
+      ItemUseOnBlockAttribute.STONE_HOE_ON_DIRT,
+      ItemUseOnBlockAttribute.GOLDEN_HOE_ON_DIRT,
+      ItemUseOnBlockAttribute.IRON_HOE_ON_DIRT,
+      ItemUseOnBlockAttribute.DIAMOND_HOE_ON_DIRT,
+      ItemUseOnBlockAttribute.NETHERITE_HOE_ON_DIRT,
 
-    new ShearEntityAttribute("ShearSheep", EntityType.SHEEP),
+      ToolUseAttribute.WOODEN_HOE,
+      ToolUseAttribute.STONE_HOE,
+      ToolUseAttribute.GOLDEN_HOE,
+      ToolUseAttribute.IRON_HOE,
+      ToolUseAttribute.DIAMOND_HOE,
+      ToolUseAttribute.NETHERITE_HOE,
 
-    new EntityBreedAttribute("BreedSheep", EntityType.SHEEP),
-    new EntityBreedAttribute("BreedCow", EntityType.COW),
-    new EntityBreedAttribute("BreedMushroomCow", EntityType.MUSHROOM_COW),
-    new EntityBreedAttribute("BreedChicken", EntityType.CHICKEN),
-    new EntityBreedAttribute("BreedPig", EntityType.PIG),
-    new EntityBreedAttribute("BreedHorse", EntityType.HORSE)
-    ), "Fermier", -2.0, false, "metiers.user");
+      ShearEntityAttribute.SHEEP,
 
-    public static final Job COOK = new Job(Arrays.asList(
-    new BlockUseAttribute("UseSmoker", Material.SMOKER),
-    new BlockUseAttribute("UseCampfire", Material.CAMPFIRE),
-    new BlockUseAttribute("UseSoulCampfire", Material.SOUL_CAMPFIRE),
+      EntityBreedAttribute.SHEEP,
+      EntityBreedAttribute.COW,
+      EntityBreedAttribute.MUSHROOM_COW,
+      EntityBreedAttribute.CHICKEN,
+      EntityBreedAttribute.PIG,
+      EntityBreedAttribute.HORSE), "Fermier", -2.0, false, "metiers.user");
 
-    new CraftItemAttribute("canCraftFood", Catalogue.carftedFood)
-    ), "Cuistot", -0.0, false, "metiers.user");
+  public static final Job COOK = new Job(Arrays.asList(
+      BlockUseAttribute.SMOKER,
+      BlockUseAttribute.CAMPFIRE,
+      BlockUseAttribute.SOUL_CAMPFIRE,
 
+      CraftItemAttribute.FOOD), "Cuistot", -0.0, false, "metiers.user");
 
   public static final Job MINER = new Job(Arrays.asList(
-    new EffectAttribute("EffectFastMining", new PotionEffect(PotionEffectType.FAST_DIGGING, 200, 1)),
-    new EffectAttribute("EffectNightVision", new PotionEffect(PotionEffectType.NIGHT_VISION, 200, 0)),
+      EffectAttribute.FAST_DIGGING_ATTRIBUTE,
+      EffectAttribute.NIGHT_VISION_ATTRIBUTE,
 
+      BlockUseAttribute.BLAST_FURNACE,
 
-    new BlockUseAttribute("UseBlastFurnace", Material.BLAST_FURNACE),
+      ToolUseAttribute.DIAMOND_PICKAXE,
+      ToolUseAttribute.NETHERITE_PICKAXE,
+      ToolUseAttribute.DIAMOND_AXE,
+      ToolUseAttribute.NETHERITE_AXE,
+      ToolUseAttribute.DIAMOND_SHOVEL,
+      ToolUseAttribute.NETHERITE_SHOVEL
 
-    new ToolUseAttribute("UseDiamondPickaxe", Material.DIAMOND_PICKAXE),
-    new ToolUseAttribute("UseNetheritePickaxe", Material.NETHERITE_PICKAXE),
-    new ToolUseAttribute("UseDiamondAxe", Material.DIAMOND_AXE),
-    new ToolUseAttribute("UseNetheriteAxe", Material.NETHERITE_AXE),
-    new ToolUseAttribute("UseDiamondShovel", Material.DIAMOND_SHOVEL),
-    new ToolUseAttribute("UseNetheriteShovel", Material.NETHERITE_SHOVEL)
-
-    ), "Mineur", -2.0, false, "metiers.user");
+  ), "Mineur", -2.0, false, "metiers.user");
 
   public static final Job WARRIOR = new Job(Arrays.asList(
-    new AbillityOnSneakAttribute("OnSneakResistance", Ability.RESISTANCE_ON_SNEAK),
-    new EffectAttribute("EffectNightVision", new PotionEffect(PotionEffectType.SPEED, 200, 0)),
+      AbillityOnSneakAttribute.RESISTANCE,
+      EffectAttribute.SPEED_ATTRIBUTE,
 
-    new WeaponUseAttribute("UseDiamondSword", Material.DIAMOND_SWORD),
-    new WeaponUseAttribute("UseNetheriteSword", Material.NETHERITE_SWORD),
+      WeaponUseAttribute.DIAMOND_SWORD,
+      WeaponUseAttribute.NETHERITE_SWORD,
 
-    new PotionEffectImmunityAttribute("immuneToWeakness", PotionEffectType.WEAKNESS)
+      PotionEffectImmunityAttribute.WEAKNESS
 
-    ), "Guerrier", +4.0, false, "metiers.user");
-
+  ), "Guerrier", +4.0, false, "metiers.user");
 
   public static final Job MERCHANT = new Job(Arrays.asList(
-    new EntityInteractAttribute("canTradeWithVillagers", EntityType.VILLAGER),
-    new EntityInteractAttribute("canTradeWithMerchant", EntityType.WANDERING_TRADER)
+      EntityInteractAttribute.VILLAGER,
+      EntityInteractAttribute.WANDERING_TRADER
 
-    ), "Marchant", +0.0, true, "metiers.user");
+  ), "Marchant", +0.0, true, "metiers.user");
 
   public static final Job Explorer = new Job(Arrays.asList(
-    new EffectAttribute("EffectNightVision", new PotionEffect(PotionEffectType.SPEED, 200, 0)),
-    new BlockUseAttribute("UseCartographyTable", Material.CARTOGRAPHY_TABLE),
+      EffectAttribute.SPEED_ATTRIBUTE,
+      BlockUseAttribute.CARTOGRAPHY_TABLE,
 
-    new PotionEffectImmunityAttribute("immuneToPoison", PotionEffectType.POISON)
+      PotionEffectImmunityAttribute.POISON
 
-    ), "Explorateur", +0.0, false, "metiers.user");
-
-  public static final Job REDSTONE_ENGINEER = new Job(Arrays.asList(
-    new BlockUseAttribute("UseRepeater", Material.REPEATER),
-    new BlockUseAttribute("UseComparator", Material.COMPARATOR),
-    new BlockUseAttribute("UseDaylightDetector", Material.DAYLIGHT_DETECTOR),
-    new BlockUseAttribute("UseDropper", Material.DROPPER)
-    ), "Ingénieur", +0.0, false, "metiers.user");
+  ), "Explorateur", +0.0, false, "metiers.user");
 
   public static final Job BULDER = new Job(Arrays.asList(
-    new BlockUseAttribute("UseStoneCutter", Material.STONECUTTER),
-    new AbillityOnSneakAttribute("OnSneakSlowFalling", Ability.SLOW_FALLING_ON_SNEAK),
-    new ToolUseAttribute("UseDiamondAxe", Material.DIAMOND_AXE),
-    new ToolUseAttribute("UseNetheriteAxe", Material.NETHERITE_AXE),
-    new ToolUseAttribute("UseDiamondShovel", Material.DIAMOND_SHOVEL),
-    new ToolUseAttribute("UseNetheriteShovel", Material.NETHERITE_SHOVEL)
+      BlockUseAttribute.STONECUTTER,
 
-    ), "Builder", -2.0, false, "metiers.user");
+      EffectAttribute.FAST_DIGGING_ATTRIBUTE,
 
-  public static final Job MAYOR = new Job(new ArrayList<JobAttribute>(), "Maire", -4.0, false, "metiers.mayor");
+      AbillityOnSneakAttribute.SLOW_FALLING,
+
+      ToolUseAttribute.DIAMOND_AXE,
+      ToolUseAttribute.NETHERITE_AXE,
+      ToolUseAttribute.DIAMOND_PICKAXE,
+
+      ToolUseAttribute.DIAMOND_SHOVEL,
+      ToolUseAttribute.NETHERITE_SHOVEL
+
+  ), "Builder", -2.0, false, "metiers.user");
+
+  public static final Job MAYOR = new Job(new ArrayList<JobAttribute>(), "Maire", -4.0, true, "metiers.mayor");
 
   public static final Job NO_JOB = new Job(new ArrayList<JobAttribute>(), "Chomeur", -4.0, false, "metiers.user");
 
-
-
   protected Job(Collection<? extends JobAttribute> attributes, String name,
-   double healthModifier, boolean canAcessNether, String permission) {
+      double healthModifier, boolean canAcessNether, String permission) {
     jobs.put(name.toLowerCase(), this);
 
     this.name = name;
@@ -188,44 +172,32 @@ public class Job {
     for (JobAttribute attribute : attributes) {
       this.attributes.add(attribute);
 
-      if (attribute instanceof BlockUseAttribute){
+      if (attribute instanceof BlockUseAttribute) {
         blocksUsable.add(((BlockUseAttribute) attribute).getType());
-      }
-      else if (attribute instanceof ItemUseAttribute){
+      } else if (attribute instanceof ItemUseAttribute) {
         itemUsable.add(((ItemUseAttribute) attribute).getType());
-      }
-      else if (attribute instanceof ItemUseOnEntityAttribute){
+      } else if (attribute instanceof ItemUseOnEntityAttribute) {
         itemOnEntityUsable.add(((ItemUseOnEntityAttribute) attribute).getType());
-      }
-      else if (attribute instanceof ItemUseOnBlockAttribute){
+      } else if (attribute instanceof ItemUseOnBlockAttribute) {
         ItemUseOnBlockAttribute a = (ItemUseOnBlockAttribute) attribute;
         itemOnBlockUsable.put(a.getType(), a.getForbiddenBlocks());
-      }
-      else if (attribute instanceof ShearEntityAttribute){
+      } else if (attribute instanceof ShearEntityAttribute) {
         entityShearUsable.add(((ShearEntityAttribute) attribute).getEntityType());
-      }
-      else if (attribute instanceof EntityInteractAttribute){
-        entityAllowed.add(((EntityInteractAttribute)attribute).getEntity());
-      }
-      else if (attribute instanceof EntityBreedAttribute){
-        entityBreedAllowed.add(((EntityBreedAttribute)attribute).getEntity());
-      }
-      else if (attribute instanceof ToolUseAttribute){
+      } else if (attribute instanceof EntityInteractAttribute) {
+        entityAllowed.add(((EntityInteractAttribute) attribute).getEntity());
+      } else if (attribute instanceof EntityBreedAttribute) {
+        entityBreedAllowed.add(((EntityBreedAttribute) attribute).getEntity());
+      } else if (attribute instanceof ToolUseAttribute) {
         toolUsable.add(((ToolUseAttribute) attribute).getType());
-      }
-      else if (attribute instanceof WeaponUseAttribute){
+      } else if (attribute instanceof WeaponUseAttribute) {
         weaponUsable.add(((WeaponUseAttribute) attribute).getType());
-      }
-      else if(attribute instanceof CraftItemAttribute){
+      } else if (attribute instanceof CraftItemAttribute) {
         craftAllowed.addAll(((CraftItemAttribute) attribute).getItems());
-      }
-      else if(attribute instanceof PotionEffectImmunityAttribute){
+      } else if (attribute instanceof PotionEffectImmunityAttribute) {
         effectsImunity.add(((PotionEffectImmunityAttribute) attribute).getType());
-      }
-      else if (attribute instanceof AbillityOnSneakAttribute){
+      } else if (attribute instanceof AbillityOnSneakAttribute) {
         abilities.add(((AbillityOnSneakAttribute) attribute).getAbility());
-      }
-      else if (attribute instanceof EffectAttribute){
+      } else if (attribute instanceof EffectAttribute) {
         effects.add((EffectAttribute) attribute);
       }
 
@@ -257,7 +229,7 @@ public class Job {
     return itemOnEntityUsable.contains(type);
   }
 
-  public boolean canUseItemOnBlock(Material type, Material block){
+  public boolean canUseItemOnBlock(Material type, Material block) {
     return itemOnBlockUsable.containsKey(type) && itemOnBlockUsable.get(type).contains(block);
   }
 
@@ -265,7 +237,7 @@ public class Job {
     return craftAllowed.contains(type);
   }
 
-  public boolean canInteractWithEntity(EntityType entity){
+  public boolean canInteractWithEntity(EntityType entity) {
     return entityAllowed.contains(entity);
   }
 
@@ -273,32 +245,46 @@ public class Job {
     return entityShearUsable.contains(type);
   }
 
-  public boolean canBreedEntity(EntityType type){
+  public boolean canBreedEntity(EntityType type) {
     return entityBreedAllowed.contains(type);
   }
 
-  public boolean canUseTool(Material type){
+  public boolean canUseTool(Material type) {
     return toolUsable.contains(type);
   }
 
-  public boolean canUseWeapon(Material type){
+  public boolean canUseWeapon(Material type) {
     return weaponUsable.contains(type);
   }
 
-  public ArrayList<EffectAttribute> getEffectsAttributes() { return effects; }
+  public ArrayList<EffectAttribute> getEffectsAttributes() {
+    return effects;
+  }
 
-  public ArrayList<Ability> getAbilities() { return abilities; }
+  public ArrayList<Ability> getAbilities() {
+    return abilities;
+  }
 
-  public Set<JobAttribute> getAttributes() { return attributes; }
+  public Set<JobAttribute> getAttributes() {
+    return attributes;
+  }
+
   public double getHealthModifier() {
     return healthModifier;
   }
 
-  public boolean isImmuneToPotionEffect(PotionEffectType type) { return effectsImunity.contains(type); }
+  public boolean isImmuneToPotionEffect(PotionEffectType type) {
+    return effectsImunity.contains(type);
+  }
 
-  public boolean canAcessNether(){ return canAcessNether; }
+  public boolean canAcessNether() {
+    return canAcessNether;
+  }
 
-  public String getPermission() { return permission; }
+  public String getPermission() {
+    return permission;
+  }
+
   public String getName() {
     return name;
   }

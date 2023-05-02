@@ -91,55 +91,7 @@ public class DrugListener implements Listener{
       PlayerInfo.applyDrunk(p, item.getItemMeta().getEnchantLevel(CustomEnchant.ALCOHOLIC) * 6);
   }
 
-  @EventHandler
-  public void onPlayerJoin(PlayerJoinEvent event){
-    final Player p = event.getPlayer();
 
-    String message = ChatColor.YELLOW + Catalogue.getRandomFromList(Catalogue.JOIN_MESSAGES).replace("{}", p.getDisplayName());
-
-    event.setJoinMessage(message);
-
-    if(p.hasPlayedBefore()) return;
-
-    Firework firework = (Firework)p.getPlayer().getWorld().spawnEntity(p.getLocation().add(0, 3, 0), EntityType.FIREWORK);
-
-    final FireworkEffect effect = FireworkEffect.builder()
-            .withColor(Color.GREEN, Color.RED, Color.BLUE, Color.WHITE)
-            .withFade(Color.YELLOW)
-            .with(FireworkEffect.Type.STAR)
-            .flicker(true)
-            .trail(true)
-            .build();
-
-    final FireworkMeta meta = firework.getFireworkMeta();
-
-    meta.setPower(2);
-
-    meta.addEffect(effect);
-
-    event.setJoinMessage("§6" + p.getDisplayName() + " a rejoint pour la première fois");
-
-    BukkitRunnable run = new BukkitRunnable() {
-      @Override
-      public void run() {
-        final Firework fw = (Firework)p.getPlayer().getWorld().spawnEntity(p.getLocation().add(3, 3, 3), EntityType.FIREWORK);
-        final Firework fw2 = (Firework)p.getPlayer().getWorld().spawnEntity(p.getLocation().add(3, 3, -3), EntityType.FIREWORK);
-        final Firework fw3 = (Firework)p.getPlayer().getWorld().spawnEntity(p.getLocation().add(-3, 3, 3), EntityType.FIREWORK);
-        final Firework fw4 = (Firework)p.getPlayer().getWorld().spawnEntity(p.getLocation().add(-3, 3, -3), EntityType.FIREWORK);
-
-        fw.setFireworkMeta(meta);
-        fw2.setFireworkMeta(meta);
-        fw3.setFireworkMeta(meta);
-        fw4.setFireworkMeta(meta);
-
-        fw.detonate();
-        fw2.detonate();
-        fw3.detonate();
-        fw4.detonate();
-      }
-    };
-    run.runTaskLater(PluginRP.getInstance(), 20);
-  }
 
   @EventHandler void onLeave(PlayerQuitEvent event){
     final Player p = event.getPlayer();

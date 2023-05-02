@@ -1,25 +1,29 @@
 package fr.yorkgangsta.metiers.data;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 
 import org.bukkit.Material;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 public class Catalogue {
 
-  public static final List<PotionEffect> badEffects = new ArrayList<PotionEffect>(Arrays.asList(
-    new PotionEffect(PotionEffectType.SLOW, 60, 0, false, false, false),
-    new PotionEffect(PotionEffectType.HUNGER, 60, 20, false, false, false),
-    new PotionEffect(PotionEffectType.DARKNESS, 60, 0, false, false, false),
-    new PotionEffect(PotionEffectType.SLOW_DIGGING, 60, 0, false, false, false),
-    new PotionEffect(PotionEffectType.WEAKNESS, 60, 0, false, false, false),
-    new PotionEffect(PotionEffectType.BLINDNESS, 60, 0, false, false, false)
-  ));
+  public static final List<String> JOIN_MESSAGES = Arrays.asList(
+    "{nickname} le {job} a rejoint la street",
+    "{nickname} le {job}rejoint le serveur en Y",
+    "{nickname} le {job} arrive sur le serveur, qui l'eut cru ?",
+    "Mais qui vois-je ? {nickname} le {job} et sa grosse §cbite",
+    "{nickname} le {job} apparait",
+    "{nickname} le {job} arrive à §agroove §estreet",
+    "{nickname} le {job} a rejoint le §kserveur",
+    "{nickname} le {job} arrive sur le serveur",
+    "{nickname} le {job} vient d'arriver.",
+    "Un nouveau combatant fait son apprition: {nickname}  le{job}",
+    "{nickname} le {job} est maintenant présent",
+    "{nickname} le {job} nous rejoint. D'ailleur voici son ip : 82.159.24.129!"
+  );
 
   public static final HashSet<Material> dirtBlocks = new HashSet<>(
     Arrays.asList(
@@ -41,7 +45,6 @@ public class Catalogue {
       Material.COOKED_COD,
       Material.COOKED_RABBIT,
       Material.COOKED_SALMON,
-      Material.DRIED_KELP,
       Material.BAKED_POTATO
     )
   );
@@ -96,11 +99,12 @@ public class Catalogue {
       Material.PAPER,
       Material.BOOK,
       Material.WRITABLE_BOOK,
-      Material.WRITTEN_BOOK
+      Material.WRITTEN_BOOK,
+      Material.NAME_TAG
     )
   );
 
-
+  private static Random randomGenerator = new Random();
 
   public static String intToRoman(int num) {
     if (num < 1 || num > 3999) {
@@ -111,6 +115,11 @@ public class Catalogue {
     String[] x = {"", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"};
     String[] i = {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"};
     return m[num/1000] + c[(num%1000)/100] + x[(num%100)/10] + i[num%10];
+  }
+
+  public static <T> T getRandomFromList(List<T> collection){
+    int i = randomGenerator.nextInt(collection.size());
+    return collection.get(i);
   }
 
 }

@@ -2,6 +2,8 @@ package fr.yorkgangsta.metiers.attributes;
 
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
+
 public abstract class JobAttribute {
   private final static HashMap<String, JobAttribute> attributes = new HashMap<>();
 
@@ -12,6 +14,10 @@ public abstract class JobAttribute {
   public JobAttribute(String name, String description){
     this.description = description;
     this.name = name;
+
+    if(attributes.containsKey(name)){
+      Bukkit.getLogger().warning("There is multiple instance of " + name);
+    }
     attributes.put(name, this);
   }
 

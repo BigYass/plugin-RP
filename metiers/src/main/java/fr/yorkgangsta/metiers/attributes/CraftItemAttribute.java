@@ -5,9 +5,13 @@ import java.util.HashSet;
 
 import org.bukkit.Material;
 
+import fr.yorkgangsta.metiers.data.Catalogue;
+
 public class CraftItemAttribute extends JobAttribute{
   private static HashSet<Material> forbiddenCrafts = new HashSet<>();
   private final HashSet<Material> canCraftItems;
+
+  public static final CraftItemAttribute FOOD = new CraftItemAttribute("canCraftFood", Catalogue.carftedFood);
 
   public CraftItemAttribute(String name, Collection<? extends Material> results) {
     super(name, "§c Permet de craft §7: §6" + results);

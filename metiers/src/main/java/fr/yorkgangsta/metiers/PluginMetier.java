@@ -1,5 +1,7 @@
 package fr.yorkgangsta.metiers;
 
+import java.util.logging.Logger;
+
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -19,6 +21,8 @@ public class PluginMetier extends JavaPlugin
 
   public void onEnable()
   {
+    saveDefaultConfig();
+
     INSTANCE = this;
 
     register();

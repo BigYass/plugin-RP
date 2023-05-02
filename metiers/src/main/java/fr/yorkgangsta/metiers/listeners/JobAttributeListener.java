@@ -5,6 +5,8 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,15 +20,18 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.event.entity.EntityBreedEvent;
+import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -47,6 +52,7 @@ import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -202,6 +208,9 @@ public class JobAttributeListener implements Listener{
   @EventHandler
   public void onPlayerUsePortal(final PlayerPortalEvent event){
     Player p = event.getPlayer();
+
+
+
     Job job = PlayerInfo.getJob(p);
     if ((p.getGameMode() != GameMode.CREATIVE && p.getGameMode() != GameMode.SPECTATOR) && event.getTo().getWorld().getName().endsWith("nether") && !job.canAcessNether()){
         for(ItemStack paper : p.getInventory().getStorageContents()){
@@ -216,41 +225,43 @@ public class JobAttributeListener implements Listener{
               public void run() {
                 Player p = Bukkit.getPlayer(id);
                 final Location loc = event.getFrom();
+                if(p != null && p.isOnline()){
+                  if(!p.getWorld().getName().endsWith("nether")) {cancel();return;}
 
-                if(!p.getWorld().getName().endsWith("nether")) {cancel();return;}
+                  for(ItemStack paper : p.getInventory().getStorageContents())
+                    if(paper != null && paper.hasItemMeta() && paper.getItemMeta().hasEnchant(CustomEnchant.NETHER_PASS)){
+                      paper.setAmount(paper.getAmount() - 1);
+                      return;
+                    }
 
-                for(ItemStack paper : p.getInventory().getStorageContents())
-                  if(paper != null && paper.hasItemMeta() && paper.getItemMeta().hasEnchant(CustomEnchant.NETHER_PASS)){
-                    paper.setAmount(paper.getAmount() - 1);
-                    return;
-                  }
+                    if(teleport){
+                      p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "Je suis explusé du nether"));
+                      BukkitRunnable tpBack = new BukkitRunnable() {
+                        public void run(){
+                          Player p = Bukkit.getPlayer(id);
+                          if(p != null && p.isOnline()){
+                            p.teleport(loc);
+                            cancel();
+                          }
+                        }
+                      };
+                      p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 80, 2));
+                      p.playSound(p, Sound.BLOCK_PORTAL_TRIGGER, SoundCategory.AMBIENT, 2.0f, .8f + (float)(Math.random() * .4));
+                      tpBack.runTaskTimer(PluginMetier.getInstance(), 80, 80);
+                      cancel();
+                      return;
+                    }
+                    teleport = true;
 
-                  if(teleport){
-                    p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "Je suis explusé du nether"));
-                    BukkitRunnable tpBack = new BukkitRunnable() {
-                      Player p = Bukkit.getPlayer(id);
-                      public void run(){
-                        p.teleport(loc);
-                        cancel();
-                      }
-                    };
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 80, 2));
-                    p.playSound(p, Sound.BLOCK_PORTAL_TRIGGER, SoundCategory.AMBIENT, 2.0f, .8f + (float)(Math.random() * .4));
-                    tpBack.runTaskLater(PluginMetier.getInstance(), 80);
-                    cancel();
-                    return;
-                  }
-                  teleport = true;
-
-                  p.playSound(p, Sound.ENTITY_SKELETON_AMBIENT, SoundCategory.AMBIENT, 2.0f, .5f);
-                  p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "Je n'ai plus de ticket" + ChatColor.GRAY + " (téléportation dans 1 minute)"));
-
+                    p.playSound(p, Sound.ENTITY_SKELETON_AMBIENT, SoundCategory.AMBIENT, 2.0f, .5f);
+                    p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "Je n'ai plus de ticket" + ChatColor.GRAY + " (téléportation dans 1 minute)"));
+                }
                 }
             };
 
             final int duration = 5 * 60;
 
-            netherCost.runTaskTimer(PluginMetier.getInstance(), 60, duration * 20);
+            netherCost.runTaskTimer(PluginMetier.getInstance(), duration * 20, duration * 20);
 
             return;
 
@@ -262,8 +273,61 @@ public class JobAttributeListener implements Listener{
   }
 
   @EventHandler
-  public void onJoin(PlayerJoinEvent event){
-    PlayerInfo.getJob(event.getPlayer());
+  public void onPlayerJoin(PlayerJoinEvent event){
+    final Player p = event.getPlayer();
+
+    PlayerInfo info = PlayerInfo.getInfo(p);
+
+    info.setModifiers();
+
+    Job job = PlayerInfo.getJob(p);
+
+    String message = ChatColor.YELLOW + Catalogue.getRandomFromList(Catalogue.JOIN_MESSAGES)
+      .replace("{nickname}", p.getDisplayName())
+      .replace("{job}", job.getName());
+
+    event.setJoinMessage(message);
+
+    if(p.hasPlayedBefore()) return;
+
+    Firework firework = (Firework)p.getPlayer().getWorld().spawnEntity(p.getLocation().add(0, 3, 0), EntityType.FIREWORK);
+
+    final FireworkEffect effect = FireworkEffect.builder()
+          .withColor(Color.GREEN, Color.RED, Color.BLUE, Color.WHITE)
+          .withFade(Color.YELLOW)
+          .with(FireworkEffect.Type.STAR)
+          .flicker(true)
+          .trail(true)
+          .build();
+
+    final FireworkMeta meta = firework.getFireworkMeta();
+
+    meta.setPower(2);
+
+    meta.addEffect(effect);
+
+    event.setJoinMessage("§6" + p.getDisplayName() + " a rejoint pour la première fois");
+
+    BukkitRunnable run = new BukkitRunnable() {
+      @Override
+      public void run() {
+        final Firework fw = (Firework)p.getPlayer().getWorld().spawnEntity(p.getLocation().add(3, 3, 3), EntityType.FIREWORK);
+        final Firework fw2 = (Firework)p.getPlayer().getWorld().spawnEntity(p.getLocation().add(3, 3, -3), EntityType.FIREWORK);
+        final Firework fw3 = (Firework)p.getPlayer().getWorld().spawnEntity(p.getLocation().add(-3, 3, 3), EntityType.FIREWORK);
+        final Firework fw4 = (Firework)p.getPlayer().getWorld().spawnEntity(p.getLocation().add(-3, 3, -3), EntityType.FIREWORK);
+
+        fw.setFireworkMeta(meta);
+        fw2.setFireworkMeta(meta);
+        fw3.setFireworkMeta(meta);
+        fw4.setFireworkMeta(meta);
+
+        fw.detonate();
+        fw2.detonate();
+        fw3.detonate();
+        fw4.detonate();
+      }
+    };
+    run.runTaskLater(PluginMetier.getInstance(), 20);
   }
 
   @EventHandler void onHopperMoveItem(InventoryMoveItemEvent event){
@@ -341,7 +405,6 @@ public class JobAttributeListener implements Listener{
   @EventHandler
   private void onBlockDestroy(BlockDropItemEvent event){
     if(event.isCancelled()) return;
-    Bukkit.broadcastMessage("Block cassé");
     if(event.getPlayer() == null || !(Catalogue.hoes.contains(event.getPlayer().getInventory().getItemInMainHand().getType())) ){
       for(int i = 0; i < event.getItems().size(); i++){
         Item item = event.getItems().get(i);
@@ -356,7 +419,7 @@ public class JobAttributeListener implements Listener{
     }
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.HIGH)
   private void onPlayerDeath (EntityDamageEvent event){
     if(event.isCancelled()) return;
     if(!(event.getEntity() instanceof Player)) return;
@@ -377,9 +440,19 @@ public class JobAttributeListener implements Listener{
       }
     }
 
+    if(event instanceof EntityDamageByEntityEvent){
+      Entity entity = ((EntityDamageByEntityEvent)event).getDamager();
+      if(entity != null) p.setVelocity(p.getLocation().toVector().add(entity.getLocation().toVector()).normalize().multiply(.4));
+    }
+
+    if(event instanceof EntityDamageByBlockEvent){
+      Block block = ((EntityDamageByBlockEvent)event).getDamager();
+      if(block != null) p.setVelocity(p.getLocation().toVector().add(block.getLocation().toVector()).normalize().multiply(.4));
+    }
+
     p.getInventory().clear();
 
-    int total_xp = Math.min(100, p.getTotalExperience());
+    int total_xp = (int) (Math.min(100, p.getTotalExperience()) * .8);
 
     p.getWorld().spawn(p.getLocation(), ExperienceOrb.class).setExperience(total_xp);
 
@@ -387,17 +460,16 @@ public class JobAttributeListener implements Listener{
     p.setExp(.0f);
 
     p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
-    p.setFoodLevel((int)(p.getFoodLevel() * .7));
+    p.setFoodLevel(Math.min(p.getFoodLevel(), 6));
 
     p.setArrowsInBody(0);
-    p.setTicksLived(1);
 
     p.sendTitle("", ChatColor.DARK_RED + "TU ES MORT...", 0, 70, 20);
 
     p.getWorld().playSound(p.getLocation(), Sound.ENTITY_PLAYER_DEATH, 1.0f, 1.0f);
     p.playSound(p.getLocation(), Sound.ITEM_TRIDENT_THUNDER, SoundCategory.PLAYERS, 1.0f, .5f);
     p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, 0));
-    p.getWorld().spawnParticle(Particle.SQUID_INK, p.getLocation().add(0, 1, 0), 40, .3, .5, .3, .2);
+    p.getWorld().spawnParticle(Particle.SQUID_INK, p.getLocation().add(0, 1, 0), 80, .35, .5, .35, .2);
 
     final GameMode gameMode = p.getGameMode();
 
@@ -408,10 +480,10 @@ public class JobAttributeListener implements Listener{
 
     PlayerInfo info = PlayerInfo.getInfo(p);
 
-    int timeLived = p.getTicksLived() / 1200;
-    final int cooldown = 5 + (10 * info.getRecentDeaths());
+    final int cooldown = 10 + Math.max(0, 240 - p.getTicksLived() / 20);
 
-    info.setRecentDeaths(Math.max(0, info.getRecentDeaths() - ((timeLived - 10) / 10)));
+    p.setTicksLived(1);
+    info.setRecentDeaths(Math.max(0, 1));
 
 
     BukkitRunnable respawn = new BukkitRunnable() {
@@ -419,8 +491,8 @@ public class JobAttributeListener implements Listener{
       @Override
       public void run() {
         Player p = Bukkit.getPlayer(id);
-        final PlayerInfo info = PlayerInfo.getInfo(p);
-          if(p.isOnline()) {
+        if(p != null && p.isOnline()) {
+          final PlayerInfo info = PlayerInfo.getInfo(p);
           if(i-- <= 0){
             p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.DARK_RED + "Je suis mort " + ChatColor.GOLD + info.getRecentDeaths() + ChatColor.DARK_RED + " fois récemment..."));
             p.teleport(p.getBedSpawnLocation() != null ? p.getBedSpawnLocation() : p.getWorld().getSpawnLocation());
@@ -431,30 +503,6 @@ public class JobAttributeListener implements Listener{
 
             p.setGameMode(gameMode);
 
-            final int index = info.getRecentDeaths() - 2;
-            BukkitRunnable deathCurse = new BukkitRunnable() {
-              final int maxTick = 6000;
-              @Override
-              public void run() {
-                Player p = Bukkit.getPlayer(id);
-
-                if(p.isOnline()){
-                  if(p.getTicksLived() > maxTick){
-
-                    cancel();
-                  }
-                  else {
-
-                      PotionEffect eff = Catalogue.badEffects.get(index);
-                      p.addPotionEffect(new PotionEffect(eff.getType(), maxTick - p.getTicksLived(), eff.getAmplifier(), eff.isAmbient(), eff.hasParticles(), eff.hasIcon()));
-
-                  }
-                }
-              }
-
-            };
-            if(index >= 0 && index < Catalogue.badEffects.size())
-              deathCurse.runTaskTimer(PluginMetier.getInstance(), 0, 400);
             cancel();
           }
           else {
@@ -464,7 +512,7 @@ public class JobAttributeListener implements Listener{
             p.playSound(p.getLocation(), Sound.ENTITY_ALLAY_DEATH, SoundCategory.PLAYERS, 1.0f, .3f);
 
             p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 0));
-            Vector new_vel = deathLocation.toVector().subtract(p.getLocation().toVector()).normalize().multiply(3);
+            Vector new_vel = deathLocation.toVector().subtract(p.getLocation().toVector().normalize().multiply(3));
             p.setVelocity(p.getVelocity().add(new_vel));
 
           }
@@ -481,22 +529,16 @@ public class JobAttributeListener implements Listener{
       respawn.runTaskTimer(PluginMetier.getInstance(), 0, 20);
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.LOW)
   private void onPlayerShootBow (EntityShootBowEvent event){
     if(event.isCancelled()) return;
 
-    if(!(event.getEntity() instanceof Player))return;
+    if(!(event.getEntity() instanceof Player) || event.getBow().getType() != Material.BOW)return;
 
     Player p = (Player)event.getEntity();
 
-    p.setCooldown(event.getBow().getType(), 100);
+    p.setCooldown(event.getBow().getType(), 40);
   }
-
-  // @EventHandler
-  // private void onPlayerDisconnect(PlayerQuitEvent event){
-  //   Player p = event.getPlayer();
-
-  // }
 
   @EventHandler
   private void onPlayerHurt(EntityDamageByEntityEvent event){
@@ -508,7 +550,7 @@ public class JobAttributeListener implements Listener{
     }
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.HIGH)
   private void onPlayerHitAnEntity(EntityDamageByEntityEvent event){
     if(event.getDamager() instanceof Player){
       Player p = (Player) event.getDamager();

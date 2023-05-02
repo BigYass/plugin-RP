@@ -32,20 +32,7 @@ public class Catalogue {
     Sound.ENTITY_SKELETON_AMBIENT
   ));
 
-  public static final List<String> JOIN_MESSAGES = Arrays.asList(
-    "{} a rejoint la street",
-    "{} rejoint le serveur en Y",
-    "{} arrive sur le serveur, qui l'eut cru ?",
-    "Mais qui vois-je ? {} et sa grosse §cbite",
-    "{} apparait",
-    "{} arrive à §agroove §estreet",
-    "{} a rejoint le §kserveur",
-    "{} arrive sur le serveur",
-    "{} vient d'arriver.",
-    "Un nouveau combatant fait son apprition: {}",
-    "{} est maintenant présent",
-    "{} nous rejoint. D'ailleur voici son ip : 82.159.24.129!"
-  );
+
 
   public static final List<String> LEAVE_MESSAGES = Arrays.asList(
     "{} quitte la street...",

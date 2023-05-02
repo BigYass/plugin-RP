@@ -6,7 +6,9 @@ import org.bukkit.entity.EntityType;
 
 public class ShearEntityAttribute extends JobAttribute{
   private static HashSet<EntityType> forbiddenItems = new HashSet<>();
-  private final EntityType entityType; 
+  private final EntityType entityType;
+
+  public static final ShearEntityAttribute SHEEP = new ShearEntityAttribute("ShearSheep", EntityType.SHEEP);
 
   public ShearEntityAttribute(String name, EntityType entityType) {
     super(name, "§cPermet de tondre l'entité §7: §6" + entityType);

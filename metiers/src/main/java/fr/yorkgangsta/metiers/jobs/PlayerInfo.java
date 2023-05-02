@@ -178,8 +178,6 @@ public class PlayerInfo {
     player.recalculatePermissions();
     player.updateCommands();
 
-
-
     setModifiers();
   }
   public void setModifiers(){
@@ -206,6 +204,7 @@ public class PlayerInfo {
 
     for(EffectAttribute attribute : currentJob.getEffectsAttributes()){
       PotionEffect eff = attribute.getPotionEffect();
+      if(eff == null) break;
       PotionEffectRunnable runnable = new PotionEffectRunnable(eff.getType(), eff.getAmplifier(), player);
       jobEffects.add(runnable);
       runnable.runTaskTimer(PluginMetier.getInstance(), 0, 40);
@@ -216,6 +215,10 @@ public class PlayerInfo {
       sneakAbilities.add(ability);
     }
 
+    player.addAttachment(PluginMetier.getInstance(), getJob().getPermission(), true);
+
+    player.recalculatePermissions();
+    player.updateCommands();
 
   }
   public Job getJob() { return currentJob; }

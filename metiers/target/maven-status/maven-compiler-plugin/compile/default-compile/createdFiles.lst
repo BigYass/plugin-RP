@@ -11,6 +11,8 @@ fr/yorkgangsta/metiers/attributes/EffectAttribute.class
 fr/yorkgangsta/metiers/jobs/PlayerInfo.class
 fr/yorkgangsta/metiers/ability/Ability$AbilityType.class
 fr/yorkgangsta/metiers/attributes/ShearEntityAttribute.class
+fr/yorkgangsta/metiers/data/Config.class
+fr/yorkgangsta/metiers/data/Language.class
 fr/yorkgangsta/metiers/ability/Ability$1.class
 fr/yorkgangsta/metiers/attributes/AbillityOnSneakAttribute.class
 fr/yorkgangsta/metiers/attributes/BlockUseAttribute.class
