@@ -156,7 +156,7 @@ public class Job {
 
   ), "Builder", -2.0, false, "metiers.user");
 
-  public static final Job MAYOR = new Job(new ArrayList<JobAttribute>(), "Maire", -4.0, true, "metiers.mayor");
+  public static final Job MAYOR = new Job(new ArrayList<JobAttribute>(), "Maire", -4.0, false, "metiers.mayor");
 
   public static final Job NO_JOB = new Job(new ArrayList<JobAttribute>(), "Chomeur", -4.0, false, "metiers.user");
 

@@ -14,7 +14,7 @@ public class SlowFallingAbilityRunnable extends PlayerRunnable{
   @Override
   public void run() {
     Player player = Bukkit.getPlayer(id);
-    if(!player.isOnline()){
+    if(player == null || !player.isOnline()){
       cancel();
       return;
     }

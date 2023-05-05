@@ -480,7 +480,7 @@ public class JobAttributeListener implements Listener{
 
     PlayerInfo info = PlayerInfo.getInfo(p);
 
-    final int cooldown = 10 + Math.max(0, 240 - p.getTicksLived() / 20);
+    final int cooldown = 10 + Math.max(0, 60 - p.getTicksLived() / 20);
 
     p.setTicksLived(1);
     info.setRecentDeaths(Math.max(0, 1));
@@ -512,8 +512,8 @@ public class JobAttributeListener implements Listener{
             p.playSound(p.getLocation(), Sound.ENTITY_ALLAY_DEATH, SoundCategory.PLAYERS, 1.0f, .3f);
 
             p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 0));
-            Vector new_vel = deathLocation.toVector().subtract(p.getLocation().toVector().normalize().multiply(3));
-            p.setVelocity(p.getVelocity().add(new_vel));
+            Vector new_vel = deathLocation.toVector().subtract(p.getLocation().toVector().normalize().multiply(1.5));
+            p.setVelocity(new_vel);
 
           }
           else {

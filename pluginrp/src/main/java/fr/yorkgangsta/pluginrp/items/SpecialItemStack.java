@@ -112,7 +112,10 @@ public class SpecialItemStack extends ItemStack{
   public String getNameID() { return nameID; }
 
   public static ItemStack getSpecialItemByName(String name, int amount){
-    return getSpecialItem(allSpecialItemStack.get(name), amount);
+    if(allSpecialItemStack.containsKey(name))
+      return getSpecialItem(allSpecialItemStack.get(name), amount);
+    else
+      return null;
   }
 
   public static ItemStack getSpecialItem(SpecialItemStack type, int amount){
