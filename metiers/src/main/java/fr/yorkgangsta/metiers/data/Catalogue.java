@@ -12,7 +12,7 @@ public class Catalogue {
 
   public static final List<String> JOIN_MESSAGES = Arrays.asList(
     "{nickname} le {job} a rejoint la street",
-    "{nickname} le {job}rejoint le serveur en Y",
+    "{nickname} le {job} rejoint le serveur en Y",
     "{nickname} le {job} arrive sur le serveur, qui l'eut cru ?",
     "Mais qui vois-je ? {nickname} le {job} et sa grosse §cbite",
     "{nickname} le {job} apparait",
@@ -20,9 +20,9 @@ public class Catalogue {
     "{nickname} le {job} a rejoint le §kserveur",
     "{nickname} le {job} arrive sur le serveur",
     "{nickname} le {job} vient d'arriver.",
-    "Un nouveau combatant fait son apprition: {nickname}  le{job}",
+    "Un nouveau combatant fait son apprition: {nickname} le {job}",
     "{nickname} le {job} est maintenant présent",
-    "{nickname} le {job} nous rejoint. D'ailleur voici son ip : 82.159.24.129!"
+    "Le {job} {nickname} nous rejoint. D'ailleur voici son ip : 82.159.24.129!"
   );
 
   public static final HashSet<Material> dirtBlocks = new HashSet<>(
