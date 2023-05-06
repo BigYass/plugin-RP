@@ -15,6 +15,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import fr.yorkgangsta.pluginrp.enchants.CustomEnchant;
+import fr.yorkgangsta.pluginrp.enchants.spell.SpellEnchantment;
 
 public class SpecialItemStack extends ItemStack{
   private static HashMap<String, SpecialItemStack> allSpecialItemStack = new HashMap<>();
@@ -62,9 +63,9 @@ public class SpecialItemStack extends ItemStack{
 
   public static SpecialItemStack NETHER_PASS = new SpecialItemStack(Material.PAPER, "§cTicket §4Nether",null , CustomEnchant.NETHER_PASS, 1);
 
-
-
   public static SpecialItemStack DICIPLINE_STICK = new SpecialItemStack(Material.STICK, "§r§cLe baton de la discipline <3",null , CustomEnchant.DISCIPLINE, 1);
+
+  public static SpecialItemStack RETURN_SCROLL = new SpecialItemStack(Material.PAPER, "§r§aParchemin de retour",Arrays.asList("§7Permet de se téléporter", "§7A votre lit") , SpellEnchantment.RETURN_TELEPORT, 1);
 
 
 
