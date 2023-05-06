@@ -459,6 +459,8 @@ public class JobAttributeListener implements Listener{
     p.setLevel(0);
     p.setExp(.0f);
 
+    p.setLastDeathLocation(p.getLocation());
+
     p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
     p.setFoodLevel(Math.min(p.getFoodLevel(), 6));
 
@@ -494,10 +496,10 @@ public class JobAttributeListener implements Listener{
         if(p != null && p.isOnline()) {
           final PlayerInfo info = PlayerInfo.getInfo(p);
           if(i-- <= 0){
-            p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.DARK_RED + "Je suis mort " + ChatColor.GOLD + info.getRecentDeaths() + ChatColor.DARK_RED + " fois récemment..."));
+            p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.DARK_RED + "Réapparition"));
             p.teleport(p.getBedSpawnLocation() != null ? p.getBedSpawnLocation() : p.getWorld().getSpawnLocation());
 
-            p.getWorld().playSound(p.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_FALL, 1.0f, .2f);
+            p.playSound(p.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_FALL, 1.0f, .2f);
             p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 30, 0));
             p.getWorld().spawnParticle(Particle.SQUID_INK, p.getLocation().add(0, 1, 0), 40, .3, .5, .3, .2);
 

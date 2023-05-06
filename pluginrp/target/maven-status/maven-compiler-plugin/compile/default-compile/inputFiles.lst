@@ -7,12 +7,14 @@
 /home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/commands/DebugTabCompletor.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/commands/CommandDebug.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/enchants/troll/DiciplingEnchantment.java
+/home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/enchants/spell/SpellEnchantment.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/enchants/weapon/FreezeEnchantment.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/enchants/food/WeedEnchantment.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/data/PlayerInfo.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/PluginRP.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/enchants/special/CokeEnchantment.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/listeners/DrugListener.java
+/home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/enchants/spell/TeleportBackEnchantment.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/enchants/weapon/LifeStealEnchantment.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/enchants/weapon/PoisonEnchantment.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/items/RecipeManager.java

@@ -1,5 +1,7 @@
 package fr.yorkgangsta.pluginrp.listeners;
 
+import java.util.Map;
+
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.GameMode;
@@ -7,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -39,6 +42,7 @@ import fr.yorkgangsta.pluginrp.PluginRP;
 import fr.yorkgangsta.pluginrp.data.Catalogue;
 import fr.yorkgangsta.pluginrp.data.PlayerInfo;
 import fr.yorkgangsta.pluginrp.enchants.CustomEnchant;
+import fr.yorkgangsta.pluginrp.enchants.spell.SpellEnchantment;
 import fr.yorkgangsta.pluginrp.items.RecipeManager;
 import fr.yorkgangsta.pluginrp.items.SpecialItemStack;
 import net.md_5.bungee.api.ChatColor;
@@ -146,6 +150,14 @@ public class DrugListener implements Listener{
           p.updateInventory();
         }
 
+      }
+      else {
+        for(Map.Entry<Enchantment, Integer> entry : item.getEnchantments().entrySet()){
+          Enchantment ench = entry.getKey();
+          if(ench instanceof SpellEnchantment){
+            ((SpellEnchantment) ench).run(p, item);
+          }
+        }
       }
     }
   }
@@ -459,7 +471,7 @@ public class DrugListener implements Listener{
       e.getWorld().dropItemNaturally(e.getLocation(),Math.random() < .5 ? SpecialItemStack.THC : SpecialItemStack.SPECIAL_POWDER);
     }
 
-    if (Catalogue.NETHER_PASS_DROPS_RATE.containsKey(event.getEntityType()) && Math.random() < Catalogue.NETHER_PASS_DROPS_RATE.get(event.getEntityType())){
+    if (event.getEntityType() != null && Catalogue.NETHER_PASS_DROPS_RATE.containsKey(event.getEntityType()) && Math.random() < Catalogue.NETHER_PASS_DROPS_RATE.get(event.getEntityType())){
       LivingEntity e = event.getEntity();
       e.getWorld().dropItemNaturally(e.getLocation(), SpecialItemStack.NETHER_PASS);
     }

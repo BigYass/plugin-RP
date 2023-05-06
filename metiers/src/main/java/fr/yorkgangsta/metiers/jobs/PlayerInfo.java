@@ -44,16 +44,6 @@ public class PlayerInfo {
   private final UUID player_id;
   private Job currentJob = Job.NO_JOB;
 
-  private int recentDeaths = 0;
-
-  public int getRecentDeaths() {
-    return recentDeaths;
-  }
-
-  public void setRecentDeaths(int recentDeaths) {
-    this.recentDeaths = recentDeaths;
-  }
-
   private PlayerInfo(Player p){
     this.currentJob = Job.NO_JOB;
     playersInfo.put(p.getUniqueId(), this);

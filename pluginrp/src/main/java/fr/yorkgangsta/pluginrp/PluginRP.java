@@ -55,6 +55,8 @@ public class PluginRP extends JavaPlugin
       PlayerInfo.resetHealth(p);
     }
 
+    CustomEnchant.unregister();
+
     LOGGER.info("PluginRP eteint!");
   }
 

@@ -65,7 +65,7 @@ public class SpecialItemStack extends ItemStack{
 
   public static SpecialItemStack DICIPLINE_STICK = new SpecialItemStack(Material.STICK, "§r§cLe baton de la discipline <3",null , CustomEnchant.DISCIPLINE, 1);
 
-  public static SpecialItemStack RETURN_SCROLL = new SpecialItemStack(Material.PAPER, "§r§aParchemin de retour",Arrays.asList("§7Permet de se téléporter", "§7A votre lit") , SpellEnchantment.RETURN_TELEPORT, 1);
+  public static SpecialItemStack RETURN_SCROLL = new SpecialItemStack(Material.PAPER, "§r§dParchemin de retour", null, SpellEnchantment.RETURN_TELEPORT, 1);
 
 
 

@@ -31,7 +31,7 @@ public class TeleportBackEnchantment extends SpellEnchantment{
 
   @Override
   public boolean conflictsWith(Enchantment arg0) {
-    return (arg0 instanceof SpellEnchantment);
+    return false;
   }
 
   @Override
@@ -50,21 +50,21 @@ public class TeleportBackEnchantment extends SpellEnchantment{
   }
 
   @Override
-  public void run(Player player, final ItemStack item) {
+  public void run(Player player, ItemStack item) {
     final UUID id = player.getUniqueId();
+    final int cost = 2;
 
-    if(player.getLevel() < this.getCost()){
-      player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "Je n'ai pas assez de niveaux (minimum: " + ChatColor.GOLD + getCost() +" )"));
+    if(player.getLevel() < cost){
+      player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "Je n'ai pas assez de niveaux (minimum: " + ChatColor.GOLD + cost + ChatColor.RED + ")"));
       return;
     }
 
     final int frequence = 4;
-    final int time = 10 * 20;
-    final int cost = getCost();
+    final int time = 5 * 20;
 
     BukkitRunnable tpBack = new BukkitRunnable() {
       int ticks = 0;
-      Location lastPosition = null;
+      Location lastPosition = Bukkit.getPlayer(id).getLocation();
 
       @Override
       public void run() {
@@ -74,47 +74,65 @@ public class TeleportBackEnchantment extends SpellEnchantment{
         }
 
         if(p.getLevel() < cost){
-          p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "Je n'ai pas assez de niveaux (minimum: " + ChatColor.GOLD + getCost() +" )"));
+          p.removePotionEffect(PotionEffectType.CONFUSION);
+          p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "Je n'ai pas assez de niveaux (minimum: " + ChatColor.GOLD + cost + ChatColor.RED + ")"));
           cancel(); return;
         }
 
-        if((lastPosition != null && lastPosition.distanceSquared(p.getLocation()) > 20) || p.isSneaking()){
+        if(lastPosition.distanceSquared(p.getLocation()) > 1 || p.isSneaking()){
+          p.removePotionEffect(PotionEffectType.CONFUSION);
           p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "Téléportation annulé..."));
           cancel(); return;
         }
 
         if(ticks >= time){
-          p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.WHITE + "Téléportation en cours..."));
+          p.removePotionEffect(PotionEffectType.CONFUSION);
+          p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.WHITE + "Téléportation..."));
 
           Location new_loc = p.getBedSpawnLocation() == null ? p.getWorld().getSpawnLocation() : p.getBedSpawnLocation();
 
           p.getWorld().spawnParticle(Particle.SQUID_INK, p.getLocation().add(0, 1, 0), 40, .4, .5, .4, .05);
-          p.getWorld().playSound(p.getLocation(), Sound.ITEM_BRUSH_BRUSH_SAND_COMPLETED, SoundCategory.PLAYERS, 2.0f, .5f);
+          p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 2.0f, 1.0f);
 
-          p.teleport(new_loc);
 
           p.setLevel(p.getLevel() - cost);
-          item.setAmount(item.getAmount() - 1);
+          p.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 60 * 20, 0, false, true, true));
+          p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 30, 0, false, false, false));
           p.damage(5.0);
 
           p.getWorld().spawnParticle(Particle.SQUID_INK, new_loc.add(0, 1, 0), 40, .4, .5, .4, .05);
-          p.getWorld().playSound(new_loc, Sound.ITEM_BRUSH_BRUSH_SAND_COMPLETED, SoundCategory.PLAYERS, 2.0f, .5f);
+          p.getWorld().playSound(new_loc, Sound.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 2.0f, 1.0f);
 
+          p.teleport(new_loc);
           cancel(); return;
         }
 
-        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.WHITE + "Téléportation dans " + ChatColor.RED + (int)((time - ticks) / 20) + ChatColor.WHITE + "..." + ChatColor.GRAY + " (Ne bougez pas)"));
+        double n = ((double)ticks / (double)time);
 
-        lastPosition = p.getLocation();
+        p.getWorld().playSound(p.getLocation(), Sound.PARTICLE_SOUL_ESCAPE, SoundCategory.AMBIENT, .2f + (float)(n * 2) / time, 1.0f);
+
+        p.getWorld().spawnParticle(Particle.SPELL_WITCH, p.getLocation().add(0, 1, 0), 3 + (int)(n * 30), .3, .5f, .3f);
+
+        p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, frequence + 2, 9, false, false, false));
+
+        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.DARK_PURPLE + "Téléportation dans " + ChatColor.RED + (int)((time - ticks) / 20) + ChatColor.DARK_PURPLE + " ..." + ChatColor.GRAY + " (Ne bougez pas)"));
 
         ticks += frequence;
       }
 
     };
 
-    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, time, 2));
-    player.playSound(player, Sound.BLOCK_SOUL_SOIL_STEP, SoundCategory.AMBIENT, 2.0f, .8f + (float)(Math.random() * .4));
+    if(Math.random()  < .2){
+      item.setAmount(item.getAmount() - 1);
+      player.playSound(player.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, SoundCategory.PLAYERS, 1.0f, 1.0f);
+    }
+    else {
+      player.playSound(player, Sound.BLOCK_SOUL_SOIL_STEP, SoundCategory.AMBIENT, 2.0f, .8f + (float)(Math.random() * .4));
+    }
+
     tpBack.runTaskTimer(PluginRP.getInstance(), 0, frequence);
+    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.RED + "Téléportation en cours"));
+    return;
   }
 
 }

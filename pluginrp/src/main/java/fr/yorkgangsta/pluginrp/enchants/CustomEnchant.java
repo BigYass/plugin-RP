@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
@@ -19,6 +20,8 @@ import fr.yorkgangsta.pluginrp.enchants.food.AlcoholicEnchantment;
 import fr.yorkgangsta.pluginrp.enchants.food.WeedEnchantment;
 import fr.yorkgangsta.pluginrp.enchants.special.CokeEnchantment;
 import fr.yorkgangsta.pluginrp.enchants.special.NetherPassEnchant;
+import fr.yorkgangsta.pluginrp.enchants.spell.SpellEnchantment;
+import fr.yorkgangsta.pluginrp.enchants.spell.TeleportBackEnchantment;
 import fr.yorkgangsta.pluginrp.enchants.troll.DiciplingEnchantment;
 import fr.yorkgangsta.pluginrp.enchants.weapon.FreezeEnchantment;
 import fr.yorkgangsta.pluginrp.enchants.weapon.LifeStealEnchantment;
@@ -48,6 +51,7 @@ public abstract class CustomEnchant extends Enchantment{
 
   public static final CustomEnchant DISCIPLINE = new DiciplingEnchantment(PluginRP.getInstance(), "Discipline", ChatColor.BLACK);
 
+  public static final SpellEnchantment RETURN_TELEPORT = new TeleportBackEnchantment(PluginRP.getInstance(), "Rappel", ChatColor.GRAY);
 
 
   public CustomEnchant(Plugin plugin, String name, ChatColor color) {
@@ -111,11 +115,10 @@ public abstract class CustomEnchant extends Enchantment{
 
   public static void register() {
     for(CustomEnchant ench : allCustomEnchatments){
-    boolean registered = Arrays.stream(Enchantment.values()).collect(Collectors.toList()).contains(ench);
+      boolean registered = Arrays.stream(Enchantment.values()).collect(Collectors.toList()).contains(ench);
 
-    if(!registered)
-      registerEnchantment(ench);
-
+      if(!registered)
+        registerEnchantment(ench);
     }
   }
 
@@ -131,10 +134,35 @@ public abstract class CustomEnchant extends Enchantment{
       e.printStackTrace();
     }
 
-    if(!registered) Bukkit.getLogger().info(PluginRP.PREFIX + enchantment.getKey().getKey() + "n'a pas été enregistré...");
-
+    if(!registered) Bukkit.getLogger().info(enchantment.getKey().getKey() + "n'a pas été enregistré...");
+    else Bukkit.getLogger().info(enchantment.getKey().getKey() + " a été enregistré!");
   }
 
+  public static void unregister() {
+    if(PluginRP.getPlugin(PluginRP.class).isEnabled()) return;
+
+    try{
+    Field f = Enchantment.class.getDeclaredField("byKey");
+    f.setAccessible(true);
+
+    Map<NamespacedKey, Enchantment> byKey = (Map<NamespacedKey, Enchantment>) f.get(Enchantment.class);
+
+    f = Enchantment.class.getDeclaredField("byName");
+    f.setAccessible(true);
+
+    Map<String, Enchantment> byName = (Map<String, Enchantment>) f.get(Enchantment.class);
+
+    if (byKey == null || byName == null) return;
+
+    for (CustomEnchant enchant : allCustomEnchatments) {
+      byKey.remove(enchant.getKey());
+      byName.remove(enchant.getName());
+    }
+
+  } catch(Exception e) {
+    e.printStackTrace();
+  }
+  }
 
   public String getName() { return name.replace("_", " "); }
 
