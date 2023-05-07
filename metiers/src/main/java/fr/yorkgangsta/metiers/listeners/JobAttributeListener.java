@@ -10,7 +10,6 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -28,7 +27,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.event.entity.EntityBreedEvent;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
@@ -47,7 +45,6 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -480,12 +477,9 @@ public class JobAttributeListener implements Listener{
     final Location deathLocation = p.getLocation();
     p.setGameMode(GameMode.SPECTATOR);
 
-    PlayerInfo info = PlayerInfo.getInfo(p);
-
     final int cooldown = 10 + Math.max(0, 60 - p.getTicksLived() / 20);
 
     p.setTicksLived(1);
-    info.setRecentDeaths(Math.max(0, 1));
 
 
     BukkitRunnable respawn = new BukkitRunnable() {
@@ -494,7 +488,6 @@ public class JobAttributeListener implements Listener{
       public void run() {
         Player p = Bukkit.getPlayer(id);
         if(p != null && p.isOnline()) {
-          final PlayerInfo info = PlayerInfo.getInfo(p);
           if(i-- <= 0){
             p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.DARK_RED + "Réapparition"));
             p.teleport(p.getBedSpawnLocation() != null ? p.getBedSpawnLocation() : p.getWorld().getSpawnLocation());

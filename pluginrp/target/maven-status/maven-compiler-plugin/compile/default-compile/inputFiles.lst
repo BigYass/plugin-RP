@@ -2,6 +2,7 @@
 /home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/enchants/special/NetherPassEnchant.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/enchants/food/AlcoholicEnchantment.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/data/Catalogue.java
+/home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/enchants/spell/InvocationPlayerSpellEnchantment.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/enchants/CustomEnchant.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/items/SpecialItemStack.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/commands/DebugTabCompletor.java
@@ -13,6 +14,7 @@
 /home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/data/PlayerInfo.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/PluginRP.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/enchants/special/CokeEnchantment.java
+/home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/enchants/spell/TransfertSpellEnchantment.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/listeners/DrugListener.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/enchants/spell/TeleportBackEnchantment.java
 /home/bigyass/Documents/Dev/Plugin Minecraft/pluginrp/src/main/java/fr/yorkgangsta/pluginrp/enchants/weapon/LifeStealEnchantment.java

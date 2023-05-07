@@ -152,10 +152,13 @@ public class DrugListener implements Listener{
 
       }
       else {
+        if(p.getCooldown(item.getType()) > 0) return;
         for(Map.Entry<Enchantment, Integer> entry : item.getEnchantments().entrySet()){
           Enchantment ench = entry.getKey();
           if(ench instanceof SpellEnchantment){
             ((SpellEnchantment) ench).run(p, item);
+            p.setCooldown(item.getType(), 10 * 20);
+            break;
           }
         }
       }

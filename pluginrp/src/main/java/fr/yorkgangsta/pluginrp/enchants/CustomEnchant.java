@@ -20,8 +20,10 @@ import fr.yorkgangsta.pluginrp.enchants.food.AlcoholicEnchantment;
 import fr.yorkgangsta.pluginrp.enchants.food.WeedEnchantment;
 import fr.yorkgangsta.pluginrp.enchants.special.CokeEnchantment;
 import fr.yorkgangsta.pluginrp.enchants.special.NetherPassEnchant;
+import fr.yorkgangsta.pluginrp.enchants.spell.InvocationPlayerSpellEnchantment;
 import fr.yorkgangsta.pluginrp.enchants.spell.SpellEnchantment;
 import fr.yorkgangsta.pluginrp.enchants.spell.TeleportBackEnchantment;
+import fr.yorkgangsta.pluginrp.enchants.spell.TransfertSpellEnchantment;
 import fr.yorkgangsta.pluginrp.enchants.troll.DiciplingEnchantment;
 import fr.yorkgangsta.pluginrp.enchants.weapon.FreezeEnchantment;
 import fr.yorkgangsta.pluginrp.enchants.weapon.LifeStealEnchantment;
@@ -52,6 +54,8 @@ public abstract class CustomEnchant extends Enchantment{
   public static final CustomEnchant DISCIPLINE = new DiciplingEnchantment(PluginRP.getInstance(), "Discipline", ChatColor.BLACK);
 
   public static final SpellEnchantment RETURN_TELEPORT = new TeleportBackEnchantment(PluginRP.getInstance(), "Rappel", ChatColor.GRAY);
+  public static final SpellEnchantment INVOCATION = new InvocationPlayerSpellEnchantment(PluginRP.getInstance(), "Invocation", ChatColor.GRAY);
+  public static final SpellEnchantment CONVOCATION = new TransfertSpellEnchantment(PluginRP.getInstance(), "Convocation", ChatColor.GRAY);
 
 
   public CustomEnchant(Plugin plugin, String name, ChatColor color) {
