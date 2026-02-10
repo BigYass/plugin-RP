@@ -1,4 +1,2 @@
-pluginrp/target/*
-metiers/target/*
-
+**/target/
 .vscode/
